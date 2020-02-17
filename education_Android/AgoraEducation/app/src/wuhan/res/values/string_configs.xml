@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whiteboard_sdk_token" translatable="false"><#YOUR WHITEBOARD SDK TOKEN#></string>
+</resources>
