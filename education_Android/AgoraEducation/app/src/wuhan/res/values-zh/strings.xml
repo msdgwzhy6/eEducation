@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">声网益课堂</string>
     <string name="hint_pwd">密码</string>
     <string name="password_should_not_be_empty">密码不能为空</string>
 </resources>
