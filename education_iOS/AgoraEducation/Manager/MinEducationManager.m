@@ -655,8 +655,6 @@ The RoomState property in the room will trigger this callback when it changes.
 
 - (void)releaseResources {
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     for (RTCVideoSessionModel *model in self.rtcVideoSessionModels){
         model.videoCanvas.view = nil;
         
@@ -678,6 +676,11 @@ The RoomState property in the room will trigger this callback when it changes.
     
     // release signal
     [self releaseSignalResources];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self releaseResources];
 }
 
 @end

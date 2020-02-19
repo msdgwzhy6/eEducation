@@ -68,7 +68,7 @@
         ConfigModel *model = [ConfigModel yy_modelWithDictionary:responseObj];
         if(model.code == 0 && model.data != nil){
             
-            [AppUpdateManager checkAppUpdateWithModel:model];
+            [AppUpdateManager.shareManager checkAppUpdateWithModel:model];
             
             weakself.configInfoModel = model.data.config;
             [KeyCenter setAgoraAppid:weakself.configInfoModel.appId];
@@ -85,14 +85,14 @@
         [weakself.activityIndicator stopAnimating];
         [weakself.joinButton setEnabled:YES];
         
-        [weakself showToast:@"network request failed"];
+        [weakself showToast:NSLocalizedString(@"RequestFailedText", nil)];
         NSLog(@"HTTP GET CONFIG ERROR:%@", error.description);
     }];
 }
 
 - (void)showToast:(NSString *)title {
     if(title == nil || title.length == 0){
-        title = @"network request failed";
+        title = NSLocalizedString(@"RequestFailedText", nil);
     }
     [self.view makeToast:title];
 }
@@ -140,6 +140,9 @@
     self.activityIndicator.hidesWhenStopped = YES;
     
     self.joinButton.layer.cornerRadius = 20;
+    
+    self.userNameTextFiled.delegate = self;
+    self.passwordTextFiled.delegate = self;
 }
 
 - (void)addTouchedRecognizer {
@@ -192,7 +195,7 @@
 
     if (self.userNameTextFiled.text.length == 0 || self.passwordTextFiled.text.length == 0 || ![self checkUserNameText:self.userNameTextFiled.text]) {
         
-        [AlertViewUtil showAlertWithController:self title:@"User name must be within 11 digits or english characters"];
+        [AlertViewUtil showAlertWithController:self title:NSLocalizedString(@"UserNameVerifyText", nil)];
         return;
     }
     
@@ -242,7 +245,7 @@
             } else if (weakself.enterRoomInfoModel.room.type == 2){
                 [weakself joinBigRoomWithIdentifier:@"bcroom"];
             } else {
-                [weakself showToast:@"can not find room"];
+                [weakself showToast:NSLocalizedString(@"RoomTypeVerifyText", nil)];
             }
             
         } else {
@@ -257,7 +260,7 @@
         [weakself.activityIndicator stopAnimating];
         [weakself.joinButton setEnabled:YES];
         
-        [weakself showToast:@"network request failed"];
+        [weakself showToast:NSLocalizedString(@"RequestFailedText", nil)];
         NSLog(@"HTTP GET CONFIG ERROR:%@", error.description);
     }];
 }
@@ -296,11 +299,11 @@
                 [weakself presentViewController:vc animated:YES completion:nil];
                 
             } else {
-                [AlertViewUtil showAlertWithController:self title:@"room is full, please change another room"];
+                [AlertViewUtil showAlertWithController:self title:NSLocalizedString(@"RoomCountVerifyText", nil)];
             }
             
         } completeFailBlock:^{
-            [weakself showToast:@"query online student count error"];
+            [weakself showToast:NSLocalizedString(@"QueryOnlineErrorText", nil)];
             
             [weakself.activityIndicator stopAnimating];
             [weakself.joinButton setEnabled:YES];
@@ -308,7 +311,7 @@
         
     } completeFailBlock:^{
         
-        [weakself showToast:@"init signal error"];
+        [weakself showToast:NSLocalizedString(@"InitSignalErrorText", nil)];
         
         [weakself.activityIndicator stopAnimating];
         [weakself.joinButton setEnabled:YES];
@@ -344,11 +347,11 @@
                 [weakself presentViewController:vc animated:YES completion:nil];
                 
             } else {
-                [AlertViewUtil showAlertWithController:self title:@"room is full, please change another room"];
+                [AlertViewUtil showAlertWithController:self title:NSLocalizedString(@"RoomCountVerifyText", nil)];
             }
             
         } completeFailBlock:^{
-            [weakself showToast:@"query online student count error"];
+            [weakself showToast:NSLocalizedString(@"QueryOnlineErrorText", nil)];
             
             [weakself.activityIndicator stopAnimating];
             [weakself.joinButton setEnabled:YES];
@@ -356,7 +359,7 @@
         
     } completeFailBlock:^{
         
-        [weakself showToast:@"init signal error"];
+        [weakself showToast:NSLocalizedString(@"InitSignalErrorText", nil)];
         
         [weakself.activityIndicator stopAnimating];
         [weakself.joinButton setEnabled:YES];
@@ -393,20 +396,20 @@
                 [weakself presentViewController:vc animated:YES completion:nil];
                 
             } else {
-                [AlertViewUtil showAlertWithController:self title:@"room is full, please change another room"];
+                [AlertViewUtil showAlertWithController:self title:NSLocalizedString(@"RoomCountVerifyText", nil)];
             }
             
         } completeFailBlock:^{
-            [weakself showToast:@"query online student count error"];
-            
+            [weakself showToast:NSLocalizedString(@"QueryOnlineErrorText", nil)];
+
             [weakself.activityIndicator stopAnimating];
             [weakself.joinButton setEnabled:YES];
         }];
         
     } completeFailBlock:^{
         
-        [weakself showToast:@"init signal error"];
-        
+        [weakself showToast:NSLocalizedString(@"InitSignalErrorText", nil)];
+
         [weakself.activityIndicator stopAnimating];
         [weakself.joinButton setEnabled:YES];
     }];
@@ -432,4 +435,11 @@
     
     return paramsModel;
 }
+
+#pragma mark UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
 @end

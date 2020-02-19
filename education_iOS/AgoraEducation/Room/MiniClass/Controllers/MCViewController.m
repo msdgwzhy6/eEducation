@@ -47,6 +47,8 @@
 @property (weak, nonatomic) IBOutlet MCStudentListView *studentListView;
 @property (weak, nonatomic) IBOutlet MCSegmentedView *segmentedView;
 
+@property (weak, nonatomic) IBOutlet UILabel *tipLabel;
+
 // white
 @property (weak, nonatomic) IBOutlet EEWhiteboardTool *whiteboardTool;
 @property (weak, nonatomic) IBOutlet EEPageControlView *pageControlView;
@@ -148,7 +150,8 @@
         CMTime cmTime = CMTimeMakeWithSeconds(0, 100);
         [weakself.educationManager seekWhiteToTime:cmTime completionHandler:^(BOOL finished) {
         }];
-        [weakself.educationManager disableWhiteDeviceInputs:NO];
+ 
+        [weakself.educationManager disableWhiteDeviceInputs:!self.educationManager.studentModel.grant_board];
         [weakself.educationManager currentWhiteScene:^(NSInteger sceneCount, NSInteger sceneIndex) {
             weakself.sceneCount = sceneCount;
             weakself.sceneIndex = sceneIndex;
@@ -157,7 +160,7 @@
         }];
         
     } completeFailBlock:^(NSError * _Nullable error) {
-        [weakself showToast:@"white board join error"];
+        [weakself showToast:NSLocalizedString(@"JoinWhiteErrorText", nil)];
     }];
 }
 
@@ -183,7 +186,7 @@
         muteChat = self.educationManager.studentModel.chat == 0 ? YES : NO;
     }
     self.chatTextFiled.contentTextFiled.enabled = muteChat ? NO : YES;
-    self.chatTextFiled.contentTextFiled.placeholder = muteChat ? @" Prohibited post" : @" Input message";
+    self.chatTextFiled.contentTextFiled.placeholder = muteChat ? NSLocalizedString(@"ProhibitedPostText", nil) : NSLocalizedString(@"InputMessageText", nil);
 }
 
 - (void)updateStudentViews:(StudentModel*)studentModel {
@@ -338,7 +341,7 @@
 
 - (void)closeRoom {
     WEAK(self);
-    [AlertViewUtil showAlertWithController:self title:@"Quit classroom?" sureHandler:^(UIAlertAction * _Nullable action) {
+    [AlertViewUtil showAlertWithController:self title:NSLocalizedString(@"QuitClassroomText", nil) sureHandler:^(UIAlertAction * _Nullable action) {
         
         [weakself.navigationView stopTimer];
         [weakself.educationManager releaseResources];
@@ -454,6 +457,38 @@
             [self.educationManager updateGlobalStateWithValue:value completeSuccessBlock:nil completeFailBlock:nil];
         }
             break;
+        case SignalP2PTypeMuteBoard:
+        {
+            currentStuModel.grant_board = 0;
+            NSString *value = [GenerateSignalBody channelAttrsWithValue:currentStuModel];
+            
+            WEAK(self);
+            [self.educationManager updateGlobalStateWithValue:value completeSuccessBlock:^{
+                weakself.tipLabel.hidden = NO;
+                [weakself.tipLabel setText:NSLocalizedString(@"MuteBoardText", nil)];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    weakself.tipLabel.hidden = YES;
+                });
+
+            } completeFailBlock:nil];
+        }
+            break;
+        case SignalP2PTypeUnMuteBoard:
+        {
+            currentStuModel.grant_board = 1;
+            NSString *value = [GenerateSignalBody channelAttrsWithValue:currentStuModel];
+            WEAK(self);
+            [self.educationManager updateGlobalStateWithValue:value completeSuccessBlock:^{
+                
+                weakself.tipLabel.hidden = NO;
+                [weakself.tipLabel setText:NSLocalizedString(@"UnMuteBoardText", nil)];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    weakself.tipLabel.hidden = YES;
+                });
+                            
+            } completeFailBlock:nil];
+        }
+            break;
         default:
             break;
     }
@@ -468,6 +503,10 @@
     {
         TeacherModel *sourceModel = sourceInfoModel.teacherModel;
         TeacherModel *currentModel = currentInfoModel.teacherModel;
+        
+        if(currentModel.whiteboard_uid.length > 0){
+            [self.educationManager disableWhiteDeviceInputs:!self.educationManager.studentModel.grant_board];
+        }
 
         if(sourceModel.class_state != currentModel.class_state) {
             currentModel.class_state ? [self.navigationView startTimer] : [self.navigationView stopTimer];
