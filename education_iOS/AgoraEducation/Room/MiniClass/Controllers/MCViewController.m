@@ -152,6 +152,7 @@
         }];
  
         [weakself.educationManager disableWhiteDeviceInputs:!self.educationManager.studentModel.grant_board];
+        [weakself.educationManager disableCameraTransform:weakself.educationManager.teacherModel.lock_board];
         [weakself.educationManager currentWhiteScene:^(NSInteger sceneCount, NSInteger sceneIndex) {
             weakself.sceneCount = sceneCount;
             weakself.sceneIndex = sceneIndex;
@@ -504,9 +505,8 @@
         TeacherModel *sourceModel = sourceInfoModel.teacherModel;
         TeacherModel *currentModel = currentInfoModel.teacherModel;
         
-        if(currentModel.whiteboard_uid.length > 0){
-            [self.educationManager disableWhiteDeviceInputs:!self.educationManager.studentModel.grant_board];
-        }
+        [self.educationManager disableWhiteDeviceInputs:!self.educationManager.studentModel.grant_board];
+        [self.educationManager disableCameraTransform:currentModel.lock_board];
 
         if(sourceModel.class_state != currentModel.class_state) {
             currentModel.class_state ? [self.navigationView startTimer] : [self.navigationView stopTimer];

@@ -144,6 +144,7 @@
         [weakself.educationManager seekWhiteToTime:cmTime completionHandler:^(BOOL finished) {
         }];
         [weakself.educationManager disableWhiteDeviceInputs:NO];
+        [weakself.educationManager disableCameraTransform:weakself.educationManager.teacherModel.lock_board];
         [weakself.educationManager currentWhiteScene:^(NSInteger sceneCount, NSInteger sceneIndex) {
             weakself.sceneCount = sceneCount;
             weakself.sceneIndex = sceneIndex;
@@ -425,6 +426,8 @@
         if(sourceModel.class_state != currentModel.class_state) {
             currentModel.class_state ? [self.navigationView startTimer] : [self.navigationView stopTimer];
         }
+        
+        [self.educationManager disableCameraTransform:currentModel.lock_board];
     }
     
     [self updateChatViews];

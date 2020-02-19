@@ -38,7 +38,7 @@ QueryOnlineErrorText = "获取线上用户数量失败";
 InitSignalErrorText = "初始化信令失败";
 JoinWhiteErrorText = "加入白板失败";
 
-MuteBoardText = "老师已授权了你的白板权限";
-UnMuteBoardText = "老师已回收了你的白板权限";
+MuteBoardText = "老师已回收了你的白板权限";
+UnMuteBoardText = "老师已授权了你的白板权限";
 
 UpdateText = "版本已经更新了，请下载最新版本";

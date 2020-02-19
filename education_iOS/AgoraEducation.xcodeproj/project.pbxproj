@@ -1372,7 +1372,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 5.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraEducation;
 				PRODUCT_NAME = "声网益课堂";
 				PROVISIONING_PROFILE_SPECIFIER = AgoraAppsDevProfile;
@@ -1405,7 +1405,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 5.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraEducationDisGY;
 				PRODUCT_NAME = "声网益课堂";
 				PROVISIONING_PROFILE_SPECIFIER = AgoraEducationGongYiAppStoreRelease;
@@ -1562,7 +1562,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 5.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraEducation;
 				PRODUCT_NAME = "声网益课堂";
 				PROVISIONING_PROFILE_SPECIFIER = AgoraAppsDevProfile;
@@ -1684,7 +1684,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 5.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraEducationQA;
 				PRODUCT_NAME = "声网益课堂";
 				PROVISIONING_PROFILE_SPECIFIER = AgoraIOTest2019;

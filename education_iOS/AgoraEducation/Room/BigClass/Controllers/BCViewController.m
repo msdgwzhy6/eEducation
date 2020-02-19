@@ -435,6 +435,7 @@
         [weakself.educationManager seekWhiteToTime:cmTime completionHandler:^(BOOL finished) {
         }];
         [weakself.educationManager disableWhiteDeviceInputs:YES];
+        [weakself.educationManager disableCameraTransform:weakself.educationManager.teacherModel.lock_board];
         [weakself.educationManager currentWhiteScene:^(NSInteger sceneCount, NSInteger sceneIndex) {
             [weakself.educationManager moveWhiteToContainer:sceneIndex];
         }];
@@ -576,6 +577,12 @@
 }
 
 -(void)signalDidUpdateGlobalStateWithSourceModel:(RolesInfoModel *)sourceInfoModel currentModel:(RolesInfoModel *)currentInfoModel {
+    
+    // teacher
+    {
+        TeacherModel *currentModel = currentInfoModel.teacherModel;
+        [self.educationManager disableCameraTransform:currentModel.lock_board];
+    }
     
     // student
     {
