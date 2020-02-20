@@ -99,7 +99,7 @@
     "rxjs": "^6.5.3",
     "typescript": "^3.6.4",
     "uuid": "^3.3.3",
-    "white-web-sdk": "2.5.10",
+    "white-web-sdk": "2.6.0",
     "@netless/white-audio-plugin": "1.1.10",
     "@netless/white-video-plugin": "1.1.17"
   },
