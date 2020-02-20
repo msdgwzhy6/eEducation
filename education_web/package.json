@@ -1,8 +1,8 @@
 {
   "name": "agora-edu-web",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "private": true,
-  "homepage": "/live",
+  "homepage": "/live_education",
   "main": "./src/index.tsx",
   "agora_electron": {
     "electron_version": "5.0.8",
@@ -99,7 +99,7 @@
     "rxjs": "^6.5.3",
     "typescript": "^3.6.4",
     "uuid": "^3.3.3",
-    "white-web-sdk": "2.5.9",
+    "white-web-sdk": "2.5.10",
     "@netless/white-audio-plugin": "1.1.10",
     "@netless/white-video-plugin": "1.1.17"
   },

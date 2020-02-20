@@ -515,8 +515,10 @@ const items = [
       if (roomStore.state.course.lockBoard) {
         room.handToolActive = false;
         room.disableCameraTransform = true;
+        room.disableDeviceInputs = true;
       } else {
         room.disableCameraTransform = false;
+        room.disableDeviceInputs = false;
       }
     }
   }, [room, roomStore.state.course.lockBoard, roomStore.state.me.role]);
