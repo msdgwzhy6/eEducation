@@ -316,13 +316,6 @@
             currentSessionModel = videoSessionModel;
         }
     }
-    
-    if(removeSessionModel != nil){
-        [self.rtcVideoSessionModels removeObject:removeSessionModel];
-    }
-    if(currentSessionModel != nil){
-        [self.rtcVideoSessionModels removeObject:currentSessionModel];
-    }
 
     AgoraRtcVideoCanvas *videoCanvas = [[AgoraRtcVideoCanvas alloc] init];
     videoCanvas.uid = model.uid;
@@ -338,6 +331,13 @@
         [self.rtcManager setupLocalVideo: videoCanvas];
     } else if(model.canvasType == RTCVideoCanvasTypeRemote) {
         [self.rtcManager setupRemoteVideo: videoCanvas];
+    }
+    
+    if(removeSessionModel != nil){
+        [self.rtcVideoSessionModels removeObject:removeSessionModel];
+    }
+    if(currentSessionModel != nil){
+        [self.rtcVideoSessionModels removeObject:currentSessionModel];
     }
     
     RTCVideoSessionModel *videoSessionModel = [RTCVideoSessionModel new];
