@@ -1,0 +1,15 @@
+
+/* Class = "UITextField"; placeholder = "姓名"; ObjectID = "C8r-GQ-Fxh"; */
+"C8r-GQ-Fxh.placeholder" = "姓名";
+
+/* Class = "UIButton"; normalTitle = "进入教室"; ObjectID = "UEU-w3-aae"; */
+"UEU-w3-aae.normalTitle" = "进入教室";
+
+/* Class = "UITextField"; placeholder = "密码"; ObjectID = "bpE-MQ-ak5"; */
+"bpE-MQ-ak5.placeholder" = "密码";
+
+/* Class = "UILabel"; text = "进入教室"; ObjectID = "poB-tT-Mak"; */
+"poB-tT-Mak.text" = "进入教室";
+
+/* Class = "UILabel"; text = "Powered by agora.io"; ObjectID = "swM-eV-3Hz"; */
+"swM-eV-3Hz.text" = "版权所有 Agora.io";

@@ -13,8 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AppUpdateManager : NSObject
 
-+ (void)checkAppUpdate;
-+ (void)checkAppUpdateWithModel:(ConfigModel *)model;
++ (instancetype)shareManager;
+- (void)checkAppUpdate;
+- (void)checkAppUpdateWithModel:(ConfigModel *)model;
 
 @end
 
