@@ -1,0 +1,8 @@
+
+# 2020/02/22
+
+ 新增rtm回放功能
+ 需要在.env里新增
+ REACT_APP_AGORA_ENDPOINT_URL=https://webdemo.agora.io
+ 上线时请使用agora官方地址代替https://api.agora.io
+ src/utils/api/rtm-restful.ts 里可以替换成开发者服务端代理到声网的地址
