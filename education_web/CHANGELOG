@@ -1,8 +1,23 @@
 
 # 2020/02/22
 
- 新增rtm回放功能
+# 1.主要变动：
+
+### 新增rtm回放功能
  需要在.env里新增
  REACT_APP_AGORA_ENDPOINT_URL=https://webdemo.agora.io
  上线时请使用agora官方地址代替https://api.agora.io
  src/utils/api/rtm-restful.ts 里可以替换成开发者服务端代理到声网的地址
+
+### loginAndJoin集成时注意事项
+  /**
+   * loginAndJoin里以下注释提到的代码 均为纯前端方案使用，在集成的时候不推荐使用
+   * 仅需要rtmClient.login和rtmClient.join和rtmClient.logout的逻辑其他逻辑均可删除
+   * rtmClient.getChannelMemberCount
+   * rtmClient.getChannelAttributeBy
+   * rtmClient.queryOnlineStatusBy
+   * canJoin
+   * result.permitted
+   */
+
+### updateMe已重构代替原先的updateAttrsBy和updateMe 用于更新房间内状态（注: 大班课场景目前不推荐使用，后期会改造）

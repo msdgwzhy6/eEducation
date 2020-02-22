@@ -602,6 +602,15 @@ export class RoomStore {
     }
   }
 
+  /**
+   * loginAndJoin里以下注释提到的代码 均为纯前端方案使用，在集成的时候不推荐使用
+   * 仅需要rtmClient.login和rtmClient.join和rtmClient.logout的逻辑其他逻辑均可删除
+   * rtmClient.getChannelMemberCount
+   * rtmClient.getChannelAttributeBy
+   * rtmClient.queryOnlineStatusBy
+   * canJoin
+   * result.permitted
+   */
   async loginAndJoin(payload: any, pass: boolean = false) {
     const { roomType, role, uid, rid, rtmToken } = payload;
     console.log("payload: ", payload);

@@ -1,6 +1,7 @@
 import {get, isEmpty} from 'lodash';
 import { AgoraFetch } from '../fetch';
 
+// 上线的时候请配置服务端跨域后的地址代替这里的host和protocol部分
 const url = `${window.location.protocol}//${window.location.host}/dev/v2/project/%s/rtm`;
 const PREFIX = url.replace('%s', process.env.REACT_APP_AGORA_APP_ID as string);
 
