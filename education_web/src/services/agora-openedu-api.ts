@@ -1,10 +1,8 @@
 import { AgoraFetch } from "../utils/fetch";
 
-const OPEN_EDU_API: string = process.env.REACT_APP_AGORA_OPEN_EDU_API as string;
-
 const AUTHORIZATION_KEY: string = process.env.REACT_APP_AGORA_OPEN_EDU_AUTH_KEY as string;
 
-const PREFIX = process.env.ENV === 'production' ? 'https://webdemo.agora.io' : '';
+const PREFIX = process.env.ENV === 'production' ? process.env.REACT_APP_AGORA_OPEN_EDU_API as string : '';
 
 const APP_ID = process.env.REACT_APP_AGORA_APP_ID as string;
 
@@ -72,7 +70,7 @@ export class AgoraOpenEduApi {
 
   async roomInfo(roomId: string) {
     let json = await AgoraFetchJson({
-      url: `${OPEN_EDU_API}/edu/v2/apps/${this.appID}/room/${roomId}`,
+      url: `/edu/v2/apps/${this.appID}/room/${roomId}`,
       method: 'GET',
       authToken: this.authorization,
     });
@@ -89,7 +87,7 @@ export class AgoraOpenEduApi {
    */
   async entry(params: EntryRoomParams) {
     let json = await AgoraFetchJson({
-      url: `${OPEN_EDU_API}/edu/v2/apps/${this.appID}/room/entry`,
+      url: `/edu/v2/apps/${this.appID}/room/entry`,
       method: 'POST',
       data: params,
       authToken: this.authorization,

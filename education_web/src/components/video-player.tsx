@@ -117,7 +117,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         lockPlay.current = false;
         if (err && err.status !== 'aborted') {
           stream.isPaused() && setResume(true);
-          console.warn('[video-player] ', err, id, stream.isPaused(), stream.isPlaying());
+          console.warn('[video-player] ', JSON.stringify(err), id, stream.isPaused(), stream.isPlaying());
         }
       })
       return () => {

@@ -161,7 +161,7 @@ export const UploadBtn: React.FC<UploadBtnProps> = ({
             <div className="description">pptx only support</div>
           </div>
         </label>
-        <input id="upload-dynamic" accept=".ppt,.pptx" onChange={uploadDynamic} type="file"></input>
+        <input id="upload-dynamic" accept=".pptx" onChange={uploadDynamic} type="file"></input>
       </div>
       <div className="slice-dash"></div>
       <div className="upload-items">
