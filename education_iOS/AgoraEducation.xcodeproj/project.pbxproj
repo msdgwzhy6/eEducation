@@ -8,11 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1A05ADA3237E4B3B0041F27B /* MCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A05ADA2237E4B3B0041F27B /* MCViewController.m */; };
-		1A05ADA7237E55630041F27B /* Room.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A05ADA6237E55630041F27B /* Room.storyboard */; };
 		1A399E5423697E9000F5A40F /* OneToOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A399E5323697E9000F5A40F /* OneToOneViewController.m */; };
 		1A44BE7522BF863000766274 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A44BE5722BF863000766274 /* Assets.xcassets */; };
-		1A44BE7622BF863000766274 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A44BE5822BF863000766274 /* LaunchScreen.storyboard */; };
-		1A44BE7722BF863000766274 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A44BE5A22BF863000766274 /* Main.storyboard */; };
 		1A44BE7A22BF863000766274 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A44BE5E22BF863000766274 /* main.m */; };
 		1A44BE7B22BF863000766274 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A44BE6022BF863000766274 /* AppDelegate.m */; };
 		1A70AFB22359F17500942742 /* SettingViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A70AFB12359F17500942742 /* SettingViewCell.m */; };
@@ -20,6 +17,11 @@
 		1AEDE5DD2338C0B40096ADEC /* EyeCareModeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AEDE5DC2338C0B40096ADEC /* EyeCareModeUtil.m */; };
 		1AEDE5E02338CB9E0096ADEC /* SkinCoverLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AEDE5DF2338CB9E0096ADEC /* SkinCoverLayer.m */; };
 		1AEDE5E32338CBBF0096ADEC /* SkinCoverWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AEDE5E22338CBBF0096ADEC /* SkinCoverWindow.m */; };
+		78515D5123FCFEFC0015B5EC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78515D4123FCFEFC0015B5EC /* LaunchScreen.storyboard */; };
+		78515D5323FCFEFC0015B5EC /* Room.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78515D4723FCFEFC0015B5EC /* Room.storyboard */; };
+		78515D5523FCFEFC0015B5EC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78515D4C23FCFEFC0015B5EC /* Main.storyboard */; };
+		78515D6C23FCFFB00015B5EC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78515D6E23FCFFB00015B5EC /* InfoPlist.strings */; };
+		78515D7023FCFFB70015B5EC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78515D7223FCFFB70015B5EC /* Localizable.strings */; };
 		787E7A3823A9FE97005F8F0C /* LoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E7A2723A9FE97005F8F0C /* LoadingView.m */; };
 		787E7A3923A9FE97005F8F0C /* ReplayControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E7A2823A9FE97005F8F0C /* ReplayControlView.m */; };
 		787E7A3A23A9FE97005F8F0C /* SliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E7A2923A9FE97005F8F0C /* SliderView.m */; };
@@ -119,14 +121,10 @@
 /* Begin PBXFileReference section */
 		1A05ADA1237E4B3B0041F27B /* MCViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCViewController.h; sourceTree = "<group>"; };
 		1A05ADA2237E4B3B0041F27B /* MCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCViewController.m; sourceTree = "<group>"; };
-		1A05ADA6237E55630041F27B /* Room.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Room.storyboard; sourceTree = "<group>"; };
-		1A1749A52365779B00A65B10 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1A399E5223697E9000F5A40F /* OneToOneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneToOneViewController.h; sourceTree = "<group>"; };
 		1A399E5323697E9000F5A40F /* OneToOneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OneToOneViewController.m; sourceTree = "<group>"; };
 		1A44BE3522BF863000766274 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1A44BE5722BF863000766274 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1A44BE5922BF863000766274 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		1A44BE5B22BF863000766274 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1A44BE5E22BF863000766274 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1A44BE6022BF863000766274 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1A44BE7E22BF874A00766274 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -152,6 +150,19 @@
 		40B28313D80C71B4DA8D643D /* Pods-AgoraEducation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgoraEducation.debug.xcconfig"; path = "Target Support Files/Pods-AgoraEducation/Pods-AgoraEducation.debug.xcconfig"; sourceTree = "<group>"; };
 		4EAA54960A24224AEAEC570D /* Pods-AgoraEducation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgoraEducation.release.xcconfig"; path = "Target Support Files/Pods-AgoraEducation/Pods-AgoraEducation.release.xcconfig"; sourceTree = "<group>"; };
 		76A4F1D25B13050F999DB322 /* Pods_AgoraEducation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgoraEducation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		78515D4223FCFEFC0015B5EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		78515D4823FCFEFC0015B5EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Room.storyboard; sourceTree = "<group>"; };
+		78515D4D23FCFEFC0015B5EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		78515D6923FCFFA70015B5EC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Room.strings"; sourceTree = "<group>"; };
+		78515D6A23FCFFA80015B5EC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		78515D6B23FCFFA80015B5EC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		78515D6D23FCFFB00015B5EC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		78515D6F23FCFFB30015B5EC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		78515D7123FCFFB70015B5EC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		78515D7323FCFFBA0015B5EC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		78515D7423FD00350015B5EC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		78515D7523FD003A0015B5EC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Room.strings; sourceTree = "<group>"; };
+		78515D7823FD00E00015B5EC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		787E7A2723A9FE97005F8F0C /* LoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingView.m; sourceTree = "<group>"; };
 		787E7A2823A9FE97005F8F0C /* ReplayControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplayControlView.m; sourceTree = "<group>"; };
 		787E7A2923A9FE97005F8F0C /* SliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderView.m; sourceTree = "<group>"; };
@@ -387,6 +398,7 @@
 		1A44BE3322BF863000766274 /* AgoraEducation */ = {
 			isa = PBXGroup;
 			children = (
+				78515D3D23FCFEFC0015B5EC /* StoryBoards */,
 				78D730C423B3853200D2146C /* Utils */,
 				787E7A4223A9FEFF005F8F0C /* Manager */,
 				787E7A2523A9FE97005F8F0C /* Replay */,
@@ -394,7 +406,6 @@
 				1AEDE5DA2338C09C0096ADEC /* EyeCare */,
 				1A44BE3622BF863000766274 /* Room */,
 				78D7312E23B38B0A00D2146C /* Main */,
-				1A44BE5A22BF863000766274 /* Main.storyboard */,
 				78D7314223B390DC00D2146C /* KeyCenter.h */,
 				78D7314323B390DC00D2146C /* KeyCenter.m */,
 				1A87571323581AEC009C55A8 /* Supporting Files */,
@@ -409,7 +420,6 @@
 				1A399E502369763900F5A40F /* OneToOne */,
 				1A399E4F236975F900F5A40F /* MiniClass */,
 				1A399E4C236975AD00F5A40F /* BigClass */,
-				1A05ADA6237E55630041F27B /* Room.storyboard */,
 				78D7312B23B3895800D2146C /* VCParamsModel.h */,
 				78D7312C23B3895800D2146C /* VCParamsModel.m */,
 				1A61CB762386303B003D9E81 /* RoomProtocol.h */,
@@ -461,10 +471,11 @@
 			children = (
 				78D7305B23B35ADB00D2146C /* AgoraEducation.pch */,
 				1A44BE5722BF863000766274 /* Assets.xcassets */,
-				1A44BE5822BF863000766274 /* LaunchScreen.storyboard */,
 				1A44BE7E22BF874A00766274 /* Info.plist */,
 				1A44BE5E22BF863000766274 /* main.m */,
 				1A44BE3522BF863000766274 /* AppDelegate.h */,
+				78515D6E23FCFFB00015B5EC /* InfoPlist.strings */,
+				78515D7223FCFFB70015B5EC /* Localizable.strings */,
 				1A44BE6022BF863000766274 /* AppDelegate.m */,
 			);
 			path = "Supporting Files";
@@ -534,6 +545,40 @@
 				1AEDE5E22338CBBF0096ADEC /* SkinCoverWindow.m */,
 			);
 			path = EyeCare;
+			sourceTree = "<group>";
+		};
+		78515D3D23FCFEFC0015B5EC /* StoryBoards */ = {
+			isa = PBXGroup;
+			children = (
+				78515D3E23FCFEFC0015B5EC /* LaunchScreen */,
+				78515D4323FCFEFC0015B5EC /* Room */,
+				78515D4923FCFEFC0015B5EC /* Main */,
+			);
+			path = StoryBoards;
+			sourceTree = "<group>";
+		};
+		78515D3E23FCFEFC0015B5EC /* LaunchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				78515D4123FCFEFC0015B5EC /* LaunchScreen.storyboard */,
+			);
+			path = LaunchScreen;
+			sourceTree = "<group>";
+		};
+		78515D4323FCFEFC0015B5EC /* Room */ = {
+			isa = PBXGroup;
+			children = (
+				78515D4723FCFEFC0015B5EC /* Room.storyboard */,
+			);
+			path = Room;
+			sourceTree = "<group>";
+		};
+		78515D4923FCFEFC0015B5EC /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				78515D4C23FCFEFC0015B5EC /* Main.storyboard */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		787E7A2523A9FE97005F8F0C /* Replay */ = {
@@ -930,6 +975,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 1AE0CFFB2283C5F20092AC5E;
 			productRefGroup = 1AE0D0052283C5F20092AC5E /* Products */;
@@ -949,15 +995,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				78D730EF23B3889D00D2146C /* EEMessageViewCell.xib in Resources */,
-				1A44BE7722BF863000766274 /* Main.storyboard in Resources */,
+				78515D6C23FCFFB00015B5EC /* InfoPlist.strings in Resources */,
 				78D730F123B3889D00D2146C /* EEWhiteboardTool.xib in Resources */,
 				78D7312723B388BE00D2146C /* EETeacherVideoView.xib in Resources */,
+				78515D5323FCFEFC0015B5EC /* Room.storyboard in Resources */,
 				787E7A3B23A9FE97005F8F0C /* ReplayControlView.xib in Resources */,
+				78515D5523FCFEFC0015B5EC /* Main.storyboard in Resources */,
 				78D730F323B3889D00D2146C /* EEChatTextFiled.xib in Resources */,
 				78D730FF23B388A400D2146C /* OTOTeacherView.xib in Resources */,
 				78D730FD23B388A400D2146C /* OTOStudentView.xib in Resources */,
-				1A05ADA7237E55630041F27B /* Room.storyboard in Resources */,
+				78515D7023FCFFB70015B5EC /* Localizable.strings in Resources */,
 				78D7311423B388B100D2146C /* MCStudentViewCell.xib in Resources */,
+				78515D5123FCFEFC0015B5EC /* LaunchScreen.storyboard in Resources */,
 				78D730EB23B3889D00D2146C /* EENavigationView.xib in Resources */,
 				787E7A3F23A9FE97005F8F0C /* ReplayViewController.xib in Resources */,
 				78D7313F23B38B5700D2146C /* EEClassRoomTypeView.xib in Resources */,
@@ -965,7 +1014,6 @@
 				1A44BE7522BF863000766274 /* Assets.xcassets in Resources */,
 				78D730EA23B3889D00D2146C /* EEColorShowView.xib in Resources */,
 				78D7314823B3964400D2146C /* README.zh.md in Resources */,
-				1A44BE7622BF863000766274 /* LaunchScreen.storyboard in Resources */,
 				78D7311223B388B100D2146C /* MCTeacherVideoView.xib in Resources */,
 				78D7312423B388BE00D2146C /* BCNavigationView.xib in Resources */,
 				78D7312323B388BE00D2146C /* BCStudentVideoView.xib in Resources */,
@@ -1136,21 +1184,52 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		1A44BE5822BF863000766274 /* LaunchScreen.storyboard */ = {
+		78515D4123FCFEFC0015B5EC /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1A44BE5922BF863000766274 /* Base */,
-				1A1749A52365779B00A65B10 /* en */,
+				78515D4223FCFEFC0015B5EC /* Base */,
+				78515D6A23FCFFA80015B5EC /* zh-Hans */,
+				78515D7423FD00350015B5EC /* en */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		1A44BE5A22BF863000766274 /* Main.storyboard */ = {
+		78515D4723FCFEFC0015B5EC /* Room.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1A44BE5B22BF863000766274 /* Base */,
+				78515D4823FCFEFC0015B5EC /* Base */,
+				78515D6923FCFFA70015B5EC /* zh-Hans */,
+				78515D7523FD003A0015B5EC /* en */,
+			);
+			name = Room.storyboard;
+			sourceTree = "<group>";
+		};
+		78515D4C23FCFEFC0015B5EC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				78515D4D23FCFEFC0015B5EC /* Base */,
+				78515D6B23FCFFA80015B5EC /* zh-Hans */,
+				78515D7823FD00E00015B5EC /* en */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		78515D6E23FCFFB00015B5EC /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				78515D6D23FCFFB00015B5EC /* en */,
+				78515D6F23FCFFB30015B5EC /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		78515D7223FCFFB70015B5EC /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				78515D7123FCFFB70015B5EC /* en */,
+				78515D7323FCFFBA0015B5EC /* zh-Hans */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1160,6 +1239,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1219,6 +1299,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1275,7 +1356,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 114;
+				CURRENT_PROJECT_VERSION = 116;
 				DEVELOPMENT_TEAM = SW3CA7M752;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1291,7 +1372,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 5.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraEducation;
 				PRODUCT_NAME = "声网益课堂";
 				PROVISIONING_PROFILE_SPECIFIER = AgoraAppsDevProfile;
@@ -1308,7 +1389,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 114;
+				CURRENT_PROJECT_VERSION = 116;
 				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1324,7 +1405,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 5.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraEducationDisGY;
 				PRODUCT_NAME = "声网益课堂";
 				PROVISIONING_PROFILE_SPECIFIER = AgoraEducationGongYiAppStoreRelease;
@@ -1408,6 +1489,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1464,7 +1546,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 114;
+				CURRENT_PROJECT_VERSION = 116;
 				DEVELOPMENT_TEAM = SW3CA7M752;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1480,7 +1562,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 5.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraEducation;
 				PRODUCT_NAME = "声网益课堂";
 				PROVISIONING_PROFILE_SPECIFIER = AgoraAppsDevProfile;
@@ -1529,6 +1611,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1585,7 +1668,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 114;
+				CURRENT_PROJECT_VERSION = 116;
 				DEVELOPMENT_TEAM = 7289G77ZF3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1601,7 +1684,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 5.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraEducationQA;
 				PRODUCT_NAME = "声网益课堂";
 				PROVISIONING_PROFILE_SPECIFIER = AgoraIOTest2019;

@@ -11,7 +11,7 @@ import { isEmpty, get } from 'lodash';
 import { roomStore } from './room';
 import { handleRegion } from '../utils/helper';
 import { globalStore } from './global';
-import { t } from '../utils/i18n';
+import { t } from './../utils/i18n';
 
 const ENABLE_LOG = process.env.REACT_APP_AGORA_LOG === 'true';
 const RECORDING_UID = 1;
@@ -63,7 +63,7 @@ export type WhiteboardState = {
   activeDir: number
   zoomRadio: number
   scale: number
-  room: Room
+  room: Room | null
   recording: boolean
   startTime: number
   endTime: number
@@ -300,17 +300,22 @@ class Whiteboard extends EventEmitter {
     const {uuid, roomToken} = await this.connect(rid, uid);
     const identity = userPayload.identity === 'host' ? 'host' : 'guest';
 
-    console.log("Whiteboard join");
-
     plugins.setPluginContext("video", {identity});
     plugins.setPluginContext("audio", {identity});
+
+    const disableDeviceInputs: boolean = location!.match(/big-class/) && identity !== 'host' ? true : false;
+    const disableOperations: boolean = location!.match(/big-class/) && identity !== 'host' ? true : false;
+    // const isWritable: boolean = location!.match(/big-class/) && identity !== 'host' ? false : true;
+
+    console.log(`[White] disableDeviceInputs, ${disableDeviceInputs}, disableOperations, ${disableOperations}, location: ${location}`);
 
     const room = await this.client.joinRoom({
       uuid,
       roomToken,
       disableBezier: true,
-      disableDeviceInputs: location!.match(/big-class/) && identity !== 'host' ? true : false,
-      disableOperations: location!.match(/big-class/) && identity !== 'host' ? true : false,
+      disableDeviceInputs,
+      disableOperations,
+      // isWritable,
     }, {
       onPhaseChanged: (phase: RoomPhase) => {
         if (phase === RoomPhase.Connected) {
@@ -345,9 +350,24 @@ class Whiteboard extends EventEmitter {
     this.commit(this.state);
   }
 
+  cleanRoom () {
+    this.state = {
+      ...this.state,
+      room: null
+    }
+    this.commit(this.state);
+  }
+
   async leave() {
     if (!this.state.room) return;
-    await this.state.room.disconnect();
+    try {
+      await this.state.room.disconnect();
+    } catch(err) {
+      console.warn('disconnect whiteboard failed', JSON.stringify(err), err);
+    } finally {
+      this.cleanRoom();
+      console.log("cleanRoom");
+    }
     this.updateLoading(true);
   }
 
@@ -419,6 +439,11 @@ class Whiteboard extends EventEmitter {
   }
 
   clearRecording () {
+
+    if (!this.state.room) {
+      console.warn("whiteboard is released", this.state.room);
+      throw 'whiteboard is released';
+    }
 
     const endTime = this.state.endTime;
     const startTime = this.state.startTime;

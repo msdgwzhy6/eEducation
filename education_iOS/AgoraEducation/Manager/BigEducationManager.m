@@ -305,7 +305,6 @@
     [self.rtcManager initEngineKit:appid];
     [self.rtcManager setChannelProfile:(AgoraChannelProfileLiveBroadcasting)];
     [self.rtcManager enableVideo];
-    [self.rtcManager startPreview];
     [self.rtcManager enableWebSdkInteroperability:YES];
     [self.rtcManager enableDualStreamMode:YES];
     [self setRTCClientRole: role];
@@ -351,13 +350,6 @@
         }
     }
     
-    if(removeSessionModel != nil){
-        [self.rtcVideoSessionModels removeObject:removeSessionModel];
-    }
-    if(currentSessionModel != nil){
-        [self.rtcVideoSessionModels removeObject:currentSessionModel];
-    }
-    
     AgoraRtcVideoCanvas *videoCanvas = [[AgoraRtcVideoCanvas alloc] init];
     videoCanvas.uid = model.uid;
     videoCanvas.view = model.videoView;
@@ -372,6 +364,13 @@
         [self.rtcManager setupLocalVideo: videoCanvas];
     } else if(model.canvasType == RTCVideoCanvasTypeRemote) {
         [self.rtcManager setupRemoteVideo: videoCanvas];
+    }
+    
+    if(removeSessionModel != nil){
+        [self.rtcVideoSessionModels removeObject:removeSessionModel];
+    }
+    if(currentSessionModel != nil){
+        [self.rtcVideoSessionModels removeObject:currentSessionModel];
     }
     
     RTCVideoSessionModel *videoSessionModel = [RTCVideoSessionModel new];
@@ -587,8 +586,13 @@
         [self.whiteManager pause];
     }
 }
+
 - (void)stopWhite {
     [self.whiteManager stop];
+}
+
+- (void)disableCameraTransform:(BOOL)disableCameraTransform {
+    [self.whiteManager disableCameraTransform:disableCameraTransform];
 }
 
 - (NSTimeInterval)whiteTotleTimeDuration {
@@ -688,8 +692,6 @@ The RoomState property in the room will trigger this callback when it changes.
 
 - (void)releaseResources {
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     for (RTCVideoSessionModel *model in self.rtcVideoSessionModels){
         model.videoCanvas.view = nil;
         
@@ -711,6 +713,11 @@ The RoomState property in the room will trigger this callback when it changes.
     
     // release signal
     [self releaseSignalResources];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self releaseResources];
 }
 
 @end

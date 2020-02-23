@@ -1,4 +1,4 @@
-const FETCH_TIMEOUT = 5000
+const FETCH_TIMEOUT = 10000
 
 export async function AgoraFetch (input: RequestInfo, init?: RequestInit): Promise<any> {
   return new Promise((resolve, reject) => {

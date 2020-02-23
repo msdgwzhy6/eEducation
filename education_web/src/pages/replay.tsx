@@ -7,7 +7,7 @@ import { useParams, useLocation } from 'react-router';
 import moment from 'moment';
 import { Progress } from '../components/progress/progress';
 import { globalStore } from '../stores/global';
-import { WhiteboardAPI, RTMRestful } from '../utils/api';
+import { WhiteboardAPI } from '../utils/api';
 import { whiteboard } from '../stores/whiteboard';
 import "video.js/dist/video-js.css";
 import { getOSSUrl } from '../utils/helper';
@@ -357,44 +357,6 @@ export const Replay: React.FC<{}> = () => {
   }, [state.currentTime]);
 
   const loadRTM = useRef<boolean>(false);
-  const [rtmMessage, setRtmMessage] = useState<{count: any, messages: any[]}>(GlobalStorage.getRtmMessage());
-  const rtmRecord = new RTMRestful(process.env.REACT_APP_AGORA_CUSTOMER_ID as string, process.env.REACT_APP_AGORA_CUSTOMER_CERTIFICATE as string);
-
-  useEffect(() => {
-    if (startTime && endTime) {
-      loadRTM.current = true;
-      const begin = moment(+startTime).utc().format("YYYY-MM-DDTHH:mm:ss");
-      const ended = moment(+endTime).utc().format("YYYY-MM-DDTHH:mm:ss");
-      // rtmRecord.getAllChannelMessages(
-      //   {
-      //    rid: rid,
-      //    startTime: begin,
-      //    endTime: ended,
-      //   }
-      // )
-      // .then((e: any) => {
-      //   loadRTM.current = false;
-      //   const messages = e.filter((it: any) => it.message_type === "group_message");
-      //   const chatMessages = messages.reduce((collect: any[], value: any) => {
-      //     const payload = value.payload;
-      //     const json = JSON.parse(payload);
-      //     if (json.content) {
-      //       return collect.concat({
-      //         account: json.account,
-      //         content: json.content,
-      //         ms: value.ms,
-      //         src: value.src
-      //       });
-      //     }
-      //     return collect;
-      //   }, []);
-      //   setRtmMessage(chatMessages);
-      // })
-      // .catch((err: any) => {
-      //   console.warn(err);
-      // })
-    }
-  }, [startTime, endTime, rid]);
 
   const PlayerCover = useCallback(() => {
     if (!player) {
@@ -471,11 +433,6 @@ export const Replay: React.FC<{}> = () => {
           <video id="white-sdk-video-js" className="video-js video-layout" style={{width: "100%", height: "100%", objectFit: "cover"}}></video>
         </div>
         <div className="chat-holder chat-board chat-messages-container">
-          {/* <div className="chat-messages" ref={ref}>
-            {rtmMessage && rtmMessage.messages && rtmMessage.messages.map((item: any, key: number) => (
-              <Message key={key} nickname={item.account} content={item.content} link={item.link} sender={false} />
-            ))}
-          </div>  */}
         </div>
       </div>
     </div>
