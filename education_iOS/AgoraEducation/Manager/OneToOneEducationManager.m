@@ -269,10 +269,10 @@
     [self.rtcManager initEngineKit:appid];
     [self.rtcManager setChannelProfile:(AgoraChannelProfileLiveBroadcasting)];
     [self.rtcManager enableVideo];
-    [self.rtcManager startPreview];
     [self.rtcManager enableWebSdkInteroperability:YES];
     [self.rtcManager enableDualStreamMode:YES];
     [self setRTCClientRole: role];
+    [self.rtcManager startPreview];
 }
 
 - (int)joinRTCChannelByToken:(NSString * _Nullable)token channelId:(NSString * _Nonnull)channelId info:(NSString * _Nullable)info uid:(NSUInteger)uid joinSuccess:(void(^ _Nullable)(NSString * _Nonnull channel, NSUInteger uid, NSInteger elapsed))joinSuccessBlock {
@@ -306,13 +306,6 @@
         }
     }
     
-    if(removeSessionModel != nil){
-        [self.rtcVideoSessionModels removeObject:removeSessionModel];
-    }
-    if(currentSessionModel != nil){
-        [self.rtcVideoSessionModels removeObject:currentSessionModel];
-    }
-    
     AgoraRtcVideoCanvas *videoCanvas = [[AgoraRtcVideoCanvas alloc] init];
     videoCanvas.uid = model.uid;
     videoCanvas.view = model.videoView;
@@ -327,6 +320,13 @@
         [self.rtcManager setupLocalVideo: videoCanvas];
     } else if(model.canvasType == RTCVideoCanvasTypeRemote) {
         [self.rtcManager setupRemoteVideo: videoCanvas];
+    }
+    
+    if(removeSessionModel != nil){
+        [self.rtcVideoSessionModels removeObject:removeSessionModel];
+    }
+    if(currentSessionModel != nil){
+        [self.rtcVideoSessionModels removeObject:currentSessionModel];
     }
     
     RTCVideoSessionModel *videoSessionModel = [RTCVideoSessionModel new];
@@ -543,8 +543,13 @@
         [self.whiteManager pause];
     }
 }
+
 - (void)stopWhite {
     [self.whiteManager stop];
+}
+
+- (void)disableCameraTransform:(BOOL)disableCameraTransform {
+    [self.whiteManager disableCameraTransform:disableCameraTransform];
 }
 
 - (NSTimeInterval)whiteTotleTimeDuration {
@@ -644,7 +649,6 @@ The RoomState property in the room will trigger this callback when it changes.
 
 - (void)releaseResources {
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     for (RTCVideoSessionModel *model in self.rtcVideoSessionModels){
         model.videoCanvas.view = nil;
         
@@ -666,6 +670,11 @@ The RoomState property in the room will trigger this callback when it changes.
     
     // release signal
     [self releaseSignalResources];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self releaseResources];
 }
 
 @end

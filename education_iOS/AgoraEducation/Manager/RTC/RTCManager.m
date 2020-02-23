@@ -47,9 +47,11 @@
 }
 
 - (int)setupLocalVideo:(AgoraRtcVideoCanvas * _Nullable)local {
+    NSLog(@"local.uid=>%d", local.uid);
     return [self.rtcEngineKit setupLocalVideo:local];
 }
 - (int)setupRemoteVideo:(AgoraRtcVideoCanvas * _Nonnull)remote {
+    NSLog(@"remote.uid=>%d", remote.uid);
     return [self.rtcEngineKit setupRemoteVideo:remote];
 }
 

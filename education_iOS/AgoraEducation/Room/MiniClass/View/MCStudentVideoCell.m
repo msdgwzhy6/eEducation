@@ -34,7 +34,7 @@
 
 - (void)setUpView {
     UIView *videoCanvasView = [[UIView alloc] init];
-    videoCanvasView.frame = self.contentView.bounds;
+    videoCanvasView.frame = CGRectMake(0, 0, 95, 70);
     [self.contentView addSubview:videoCanvasView];
     self.videoCanvasView = videoCanvasView;
 
@@ -45,7 +45,11 @@
     backImageView.contentMode = UIViewContentModeScaleAspectFit;
     backImageView.backgroundColor = [UIColor colorWithHexString:@"DBE2E5"];
     self.backImageView = backImageView;
-
+    
+    UIView *labelView = [[UIView alloc] initWithFrame:CGRectMake(0, 50, 95, 20)];
+    labelView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
+    [self.contentView addSubview:labelView];
+    
     UILabel *nameLable = [self addNameLabel];
     [self.contentView addSubview:nameLable];
     [self bringSubviewToFront:nameLable];
@@ -60,8 +64,8 @@
 
 - (UILabel *)addNameLabel {
     UILabel *nameLabel = [[UILabel alloc] init];
-    nameLabel.frame = CGRectMake(0, 70-20, 95, 20);
-    nameLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+    nameLabel.frame = CGRectMake(5, 50, 65, 20);
+    nameLabel.backgroundColor = UIColor.clearColor;
     nameLabel.textColor = [UIColor whiteColor];
     nameLabel.font = [UIFont systemFontOfSize:10.f];
     nameLabel.layer.cornerRadius = 2;
