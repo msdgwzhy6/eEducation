@@ -127,6 +127,7 @@ public abstract class ClassContext implements ChannelEventListener {
         runListener(() -> {
             classEventListener.onClassStateChanged(teacher.class_state == 1);
             classEventListener.onWhiteboardIdChanged(teacher.whiteboard_uid);
+            classEventListener.onLockWhiteboard(teacher.lock_board == 1);
             classEventListener.onMuteAllChat(teacher.mute_chat == 1);
         });
     }
@@ -164,6 +165,10 @@ public abstract class ClassContext implements ChannelEventListener {
                 muteLocalChat(false);
                 break;
         }
+    }
+
+    @Override
+    public void onMemberCountUpdated(int count) {
     }
 
     private RtcEventListener rtcEventListener = new RtcEventListener() {
