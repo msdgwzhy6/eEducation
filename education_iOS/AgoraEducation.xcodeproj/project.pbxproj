@@ -32,6 +32,9 @@
 		787E7A3D23A9FE97005F8F0C /* EduButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E7A3023A9FE97005F8F0C /* EduButton.m */; };
 		787E7A3F23A9FE97005F8F0C /* ReplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 787E7A3423A9FE97005F8F0C /* ReplayViewController.xib */; };
 		787E7A4023A9FE97005F8F0C /* ReplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E7A3523A9FE97005F8F0C /* ReplayViewController.m */; };
+		78C127A324037E2100420E72 /* CombineReplayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C127A224037E2100420E72 /* CombineReplayManager.m */; };
+		78C127A624037EB300420E72 /* RTCReplayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C127A524037EB300420E72 /* RTCReplayManager.m */; };
+		78C127A924037ECD00420E72 /* WhiteReplayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C127A824037ECD00420E72 /* WhiteReplayManager.m */; };
 		78D7307223B3638B00D2146C /* SignalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D7306423B3638B00D2146C /* SignalManager.m */; };
 		78D7307423B3638B00D2146C /* RTCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D7306723B3638B00D2146C /* RTCManager.m */; };
 		78D7307523B3638B00D2146C /* WhiteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D7306C23B3638B00D2146C /* WhiteManager.m */; };
@@ -179,6 +182,12 @@
 		787E7A3223A9FE97005F8F0C /* ReplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayViewController.h; sourceTree = "<group>"; };
 		787E7A3423A9FE97005F8F0C /* ReplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReplayViewController.xib; sourceTree = "<group>"; };
 		787E7A3523A9FE97005F8F0C /* ReplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplayViewController.m; sourceTree = "<group>"; };
+		78C127A124037E2100420E72 /* CombineReplayManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CombineReplayManager.h; sourceTree = "<group>"; };
+		78C127A224037E2100420E72 /* CombineReplayManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CombineReplayManager.m; sourceTree = "<group>"; };
+		78C127A424037EB200420E72 /* RTCReplayManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTCReplayManager.h; sourceTree = "<group>"; };
+		78C127A524037EB300420E72 /* RTCReplayManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTCReplayManager.m; sourceTree = "<group>"; };
+		78C127A724037ECD00420E72 /* WhiteReplayManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WhiteReplayManager.h; sourceTree = "<group>"; };
+		78C127A824037ECD00420E72 /* WhiteReplayManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhiteReplayManager.m; sourceTree = "<group>"; };
 		78D7305B23B35ADB00D2146C /* AgoraEducation.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraEducation.pch; sourceTree = "<group>"; };
 		78D7306323B3638B00D2146C /* SignalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalManager.h; sourceTree = "<group>"; };
 		78D7306423B3638B00D2146C /* SignalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalManager.m; sourceTree = "<group>"; };
@@ -625,6 +634,7 @@
 		787E7A4223A9FEFF005F8F0C /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				78C127A024037DE300420E72 /* CombineReplayManager */,
 				78515D3623FCD4F20015B5EC /* AppUpdateManager */,
 				78D731A823BB103B00D2146C /* BigEducationManager.h */,
 				78D731A923BB103B00D2146C /* BigEducationManager.m */,
@@ -642,6 +652,19 @@
 				78D7306B23B3638B00D2146C /* White */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		78C127A024037DE300420E72 /* CombineReplayManager */ = {
+			isa = PBXGroup;
+			children = (
+				78C127A124037E2100420E72 /* CombineReplayManager.h */,
+				78C127A224037E2100420E72 /* CombineReplayManager.m */,
+				78C127A424037EB200420E72 /* RTCReplayManager.h */,
+				78C127A524037EB300420E72 /* RTCReplayManager.m */,
+				78C127A724037ECD00420E72 /* WhiteReplayManager.h */,
+				78C127A824037ECD00420E72 /* WhiteReplayManager.m */,
+			);
+			path = CombineReplayManager;
 			sourceTree = "<group>";
 		};
 		78D7306123B3638B00D2146C /* Signal */ = {
@@ -1031,6 +1054,7 @@
 				78D7310E23B388B100D2146C /* MCStudentVideoListView.m in Sources */,
 				78D730EE23B3889D00D2146C /* EEMessageView.m in Sources */,
 				1A44BE7B22BF863000766274 /* AppDelegate.m in Sources */,
+				78C127A324037E2100420E72 /* CombineReplayManager.m in Sources */,
 				787E7A3D23A9FE97005F8F0C /* EduButton.m in Sources */,
 				78D7312D23B3895800D2146C /* VCParamsModel.m in Sources */,
 				78D730C323B384D400D2146C /* HttpManager.m in Sources */,
@@ -1057,6 +1081,7 @@
 				1A05ADA3237E4B3B0041F27B /* MCViewController.m in Sources */,
 				78D730CA23B3853200D2146C /* NSString+MD5.m in Sources */,
 				1AEDE5E32338CBBF0096ADEC /* SkinCoverWindow.m in Sources */,
+				78C127A924037ECD00420E72 /* WhiteReplayManager.m in Sources */,
 				78D7312123B388BE00D2146C /* BCNavigationView.m in Sources */,
 				1AEDE5E02338CB9E0096ADEC /* SkinCoverLayer.m in Sources */,
 				78D7312523B388BE00D2146C /* BCSegmentedView.m in Sources */,
@@ -1080,6 +1105,7 @@
 				78D7311123B388B100D2146C /* MCStudentListView.m in Sources */,
 				787E7A3A23A9FE97005F8F0C /* SliderView.m in Sources */,
 				78D730C923B3853200D2146C /* UIColor+Addition.m in Sources */,
+				78C127A624037EB300420E72 /* RTCReplayManager.m in Sources */,
 				78D730EC23B3889D00D2146C /* EEColorViewCell.m in Sources */,
 				1A44BE7A22BF863000766274 /* main.m in Sources */,
 				78D730F423B3889D00D2146C /* EEChatTextFiled.m in Sources */,
