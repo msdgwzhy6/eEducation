@@ -22,6 +22,8 @@
 #import "NSString+MD5.h"
 #import "KeyCenter.h"
 
+#import "ReplayViewController.h"
+
 @interface MainViewController ()<EEClassRoomTypeDelegate, SignalDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIView *baseView;
 @property (weak, nonatomic) IBOutlet UITextField *classNameTextFiled;
@@ -162,31 +164,22 @@
 
 - (IBAction)joinRoom:(UIButton *)sender {
 
-    if (self.classNameTextFiled.text.length <= 0 || self.userNameTextFiled.text.length <= 0 || ![self checkFieldText:self.classNameTextFiled.text] || ![self checkFieldText:self.userNameTextFiled.text]) {
-        
-        [AlertViewUtil showAlertWithController:self title:NSLocalizedString(@"UserNameVerifyText", nil)];
-        return;
-    }
+    // test code
+    ReplayViewController *vc = [[ReplayViewController alloc] initWithNibName:@"ReplayViewController" bundle:nil];
+    // white room id
+    vc.roomid = @"80d1a353c68b4db7a3284f9a02835c27";
+    // class start time
+    vc.startTime = @"1576549172877";
+    // class end time
+    vc.endTime = @"1576549193735";
+    // video url string
+    vc.videoPath = @"https://netless-media.oss-cn-hangzhou.aliyuncs.com/c447a98ece45696f09c7fc88f649c082_3002a61acef14e4aa1b0154f734a991d.m3u8";
 
-    NSString *className = self.classNameTextFiled.text;
-    if ([self.roomType.titleLabel.text isEqualToString:NSLocalizedString(@"OneToOneText", nil)]) {
-        
-        NSString *channelName = [NSString stringWithFormat:@"0%@", className.md5];
-        [self join1V1RoomWithChannelName:channelName maxStudentCount:1 vcIdentifier:@"oneToOneRoom"];
-
-    } else if ([self.roomType.titleLabel.text isEqualToString:NSLocalizedString(@"SmallClassText", nil)]) {
-
-        NSString *channelName = [NSString stringWithFormat:@"1%@", className.md5];
-        [self joinMinRoomWithChannelName:channelName maxStudentCount:16 vcIdentifier:@"mcRoom"];
-        
-    } else if ([self.roomType.titleLabel.text isEqualToString:NSLocalizedString(@"LargeClassText", nil)]) {
-
-        NSString *channelName = [NSString stringWithFormat:@"2%@", className.md5];
-        [self joinBigRoomWithChannelName:channelName vcIdentifier:@"bcroom"];
-        
-    } else {
-        [AlertViewUtil showAlertWithController:self title:NSLocalizedString(@"RoomTypeVerifyText", nil)];
-        return;
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
+    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
+    UINavigationController *nvc = (UINavigationController*)window.rootViewController;
+    if(nvc != nil){
+        [nvc.visibleViewController presentViewController:vc animated:YES completion:nil];
     }
 }
 
