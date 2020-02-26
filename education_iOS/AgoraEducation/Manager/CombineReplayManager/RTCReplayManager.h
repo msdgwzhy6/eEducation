@@ -9,19 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
-#ifdef DEBUG
-#define AgoraLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-#define AgoraLog(...)
-#endif
-
 @protocol RTCReplayProtocol <NSObject>
 
 @required
-- (void)rtcReplayerStartBuffering;
-- (void)rtcReplayerEndBuffering;
-- (void)rtcReplayerDidFinish;
-- (void)rtcReplayerError:(NSError * _Nullable)error;
+- (void)rtcReplayStartBuffering;
+- (void)rtcReplayEndBuffering;
+- (void)rtcReplayDidFinish;
+- (void)rtcReplayError:(NSError * _Nullable)error;
 
 @optional
 /**

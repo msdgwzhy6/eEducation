@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-#import <Whiteboard/Whiteboard.h>
+#import "ReplayerModel.h"
 
 @protocol CombineReplayDelegate <NSObject>
 
@@ -17,7 +17,14 @@
 - (void)combinePlayStartBuffering;
 - (void)combinePlayEndBuffering;
 - (void)combinePlayDidFinish;
-- (void)combineReplayError:(NSError * _Nullable)error;
+
+// 由外部事件打断，比如用户主动进入后台
+- (void)combinePlayPause;
+- (void)combinePlayError:(NSError * _Nullable)error;
+
+@optional
+- (void)rtcPlayDidFinish;
+- (void)whitePlayDidFinish;
 
 @end
 
@@ -50,15 +57,16 @@ typedef NS_OPTIONS(NSUInteger, CombineSyncManagerPauseReason) {
 /** 暂停原因，默认所有 buffer + 主动暂停 */
 @property (nonatomic, assign, readonly) NSUInteger pauseReason;
 
-- (void)initWithRTCUrl:(NSURL *)mediaUrl;
-- (void)initWithWhitePlayer:(WhitePlayer *)whitePlayer;
+- (AVPlayer *)setupRTCReplayWithURL:(NSURL *)mediaUrl;
+- (void)setupWhiteReplayWithValue:(ReplayerModel *)model completeSuccessBlock:(void (^) (void)) successBlock completeFailBlock:(void (^) (NSError * _Nullable error))failBlock;
 
-// 毫秒级时间戳， 13位
-- (void)replayWithClassStartTime:(NSString *)classStartTime classEndTime:(NSString *)classEndTime;
 - (void)play;
 - (void)pause;
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
 
+- (void)updateWhitePlayerPhase:(WhitePlayerPhase)phase;
+
+- (void)releaseResource;
 @end
 
 NS_ASSUME_NONNULL_END

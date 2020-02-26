@@ -70,9 +70,9 @@ static NSString * const kLoadedTimeRangesKey = @"loadedTimeRanges";
                                                object:nil];
     
 #if TARGET_OS_IPHONE
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(interruption:)
-                                                 name:AVAudioSessionInterruptionNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(interruption:)
+//                                                 name:AVAudioSessionInterruptionNotification object:[AVAudioSession sharedInstance]];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(routeChange:)
                                                  name:AVAudioSessionRouteChangeNotification
@@ -82,26 +82,26 @@ static NSString * const kLoadedTimeRangesKey = @"loadedTimeRanges";
 
 #pragma mark - Notification
 - (void)playerItemDidReachEnd:(NSNotification *)notification {
-    if (notification.object == self.nativePlayer.currentItem && [self.delegate respondsToSelector:@selector(rtcReplayerDidFinish)]) {
-        [self.delegate rtcReplayerDidFinish];
+    if (notification.object == self.nativePlayer.currentItem && [self.delegate respondsToSelector:@selector(rtcReplayDidFinish)]) {
+        [self.delegate rtcReplayDidFinish];
     }
 }
 
-- (void)interruption:(NSNotification *)notification {
-    NSDictionary *interuptionDict = notification.userInfo;
-    NSInteger interruptionType = [interuptionDict[AVAudioSessionInterruptionTypeKey] integerValue];
-    
-    if (interruptionType == AVAudioSessionInterruptionTypeBegan && [self videoDesireToPlay]) {
-        self.interruptedWhilePlaying = YES;
-        [self pause];
-    } else if (interruptionType == AVAudioSessionInterruptionTypeEnded && self.isInterruptedWhilePlaying) {
-        self.interruptedWhilePlaying = NO;
-        NSInteger resume = [interuptionDict[AVAudioSessionInterruptionOptionKey] integerValue];
-        if (resume == AVAudioSessionInterruptionOptionShouldResume) {
-            [self play];
-        }
-    }
-}
+//- (void)interruption:(NSNotification *)notification {
+//    NSDictionary *interuptionDict = notification.userInfo;
+//    NSInteger interruptionType = [interuptionDict[AVAudioSessionInterruptionTypeKey] integerValue];
+//
+//    if (interruptionType == AVAudioSessionInterruptionTypeBegan && [self videoDesireToPlay]) {
+//        self.interruptedWhilePlaying = YES;
+//        [self pause];
+//    } else if (interruptionType == AVAudioSessionInterruptionTypeEnded && self.isInterruptedWhilePlaying) {
+//        self.interruptedWhilePlaying = NO;
+//        NSInteger resume = [interuptionDict[AVAudioSessionInterruptionOptionKey] integerValue];
+//        if (resume == AVAudioSessionInterruptionOptionShouldResume) {
+//            [self play];
+//        }
+//    }
+//}
 
 - (void)routeChange:(NSNotification *)notification {
     NSDictionary *routeChangeDict = notification.userInfo;
@@ -131,10 +131,8 @@ static NSString * const kLoadedTimeRangesKey = @"loadedTimeRanges";
     
     __weak typeof(self)weakSelf = self;
     [self.nativePlayer seekToTime:time completionHandler:^(BOOL finished) {
-        if (finished) {
-            NSTimeInterval realTime = CMTimeGetSeconds(weakSelf.nativePlayer.currentItem.currentTime);
-            completionHandler(realTime, finished);
-        }
+        NSTimeInterval realTime = CMTimeGetSeconds(weakSelf.nativePlayer.currentItem.currentTime);
+        completionHandler(realTime, finished);
     }];
 }
 
@@ -151,14 +149,14 @@ static NSString * const kLoadedTimeRangesKey = @"loadedTimeRanges";
 
 #pragma mark - NativePlayer Buffering
 - (void)nativeStartBuffering {
-    if ([self.delegate respondsToSelector:@selector(rtcReplayerStartBuffering)]) {
-        [self.delegate rtcReplayerStartBuffering];
+    if ([self.delegate respondsToSelector:@selector(rtcReplayStartBuffering)]) {
+        [self.delegate rtcReplayStartBuffering];
     }
 }
 
 - (void)nativeEndBuffering {
-    if ([self.delegate respondsToSelector:@selector(rtcReplayerEndBuffering)]) {
-        [self.delegate rtcReplayerEndBuffering];
+    if ([self.delegate respondsToSelector:@selector(rtcReplayEndBuffering)]) {
+        [self.delegate rtcReplayEndBuffering];
     }
 }
 
@@ -202,8 +200,8 @@ static NSString * const kLoadedTimeRangesKey = @"loadedTimeRanges";
         
         if (self.nativePlayer.status == AVPlayerStatusFailed) {
             [self pause];
-            if ([self.delegate respondsToSelector:@selector(rtcReplayerError:)]) {
-                [self.delegate rtcReplayerError:self.nativePlayer.error];
+            if ([self.delegate respondsToSelector:@selector(rtcReplayError:)]) {
+                [self.delegate rtcReplayError:self.nativePlayer.error];
             }
         }
     } else if ([keyPath isEqualToString:kPlaybackLikelyToKeepUpKey]) {

@@ -13,16 +13,13 @@
 @interface CombineReplayManager ()<RTCReplayProtocol, WhiteReplayProtocol> {
     CADisplayLink *_displayLink;
     NSInteger _frameInterval;
-    NSTimeInterval displayStartTime;
+    NSTimeInterval _displayDurationTime;
 }
 
 @property (nonatomic, assign, readwrite) NSUInteger pauseReason;
 
 @property (nonatomic, strong) RTCReplayManager *rtcReplayManager;
-@property (nonatomic, assign) BOOL rtcReplayFinished;
-
-@property (nonatomic, strong) WhiteReplayManager *whiteReplayManagaer;
-@property (nonatomic, assign) BOOL whiteReplayFinished;
+@property (nonatomic, strong) WhiteReplayManager *whiteReplayManager;
 
 @property (nonatomic, copy) NSString *classStartTime;
 @property (nonatomic, copy) NSString *classEndTime;
@@ -33,52 +30,71 @@
 
 - (instancetype)init {
     if(self = [super init]){
-        self.rtcReplayFinished = NO;
-        self.whiteReplayFinished = NO;
-        
-        _frameInterval = 15;
+
+        _frameInterval = 60;
+        _displayDurationTime = 0;
         
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onDisplayLink:)];
         _displayLink.preferredFramesPerSecond =_frameInterval;
         [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
         _displayLink.paused = YES;
+        
+        _pauseReason = CombineSyncManagerPauseReasonInit;
+        
+        [self registerNotification];
     }
     return self;
 }
 
-- (void)initWithRTCUrl:(NSURL *)mediaUrl {
+#pragma mark - Notification
+- (void)registerNotification {
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+    
+}
+
+- (void)applicationWillResignActive {
+    if(!_displayLink.paused) {
+        [self pause];
+        if ([self.delegate respondsToSelector:@selector(combinePlayPause)]) {
+            [self.delegate combinePlayPause];
+        }
+    }
+}
+
+- (AVPlayer *)setupRTCReplayWithURL:(NSURL *)mediaUrl {
     self.rtcReplayManager = [[RTCReplayManager alloc] initWithMediaUrl:mediaUrl];
+    self.rtcReplayManager.delegate = self;
+    return self.rtcReplayManager.nativePlayer;
 }
 
-- (void)initWithWhitePlayer:(WhitePlayer *)whitePlayer {
-    self.whiteReplayManagaer = [[WhiteReplayManager alloc] initWithWhitePlayer:whitePlayer];
-}
+- (void)setupWhiteReplayWithValue:(ReplayerModel *)model completeSuccessBlock:(void (^) (void)) successBlock completeFailBlock:(void (^) (NSError * _Nullable error))failBlock {
+    
+    self.classStartTime = model.startTime;
+    self.classEndTime = model.endTime;
 
-- (void)replayWithClassStartTime:(NSString *)classStartTime classEndTime:(NSString *)classEndTime {
-    
-    NSAssert(classStartTime && classStartTime.length == 13, @"classStartTime must be millisecond unit");
-    NSAssert(classEndTime && classEndTime.length == 13, @"classEndTime must be millisecond unit");
-    
-    self.classStartTime = classStartTime;
-    self.classEndTime = classEndTime;
+    self.whiteReplayManager = [WhiteReplayManager new];
+    self.whiteReplayManager.delegate = self;
+    [self.whiteReplayManager setupWithValue:model completeSuccessBlock:successBlock completeFailBlock:failBlock];
 }
 
 - (void)onDisplayLink: (CADisplayLink *)displayLink {
     
-    NSTimeInterval classDurationTime = self.classEndTime.floatValue - self.classStartTime.floatValue;
+    NSTimeInterval classDurationTime = self.classEndTime.integerValue - self.classStartTime.integerValue;
     
-    // 当前时间
-    NSTimeInterval currentTime = [[NSDate date] timeIntervalSince1970] * 1000;
-    NSTimeInterval displayDurationTime = currentTime - displayStartTime;
+    _displayDurationTime += displayLink.duration;
 
-    if(displayDurationTime > classDurationTime) {
+    if(_displayDurationTime * 1000 > classDurationTime) {
         [self finish];
         return;
     }
     
     if (_delegate && [_delegate respondsToSelector:@selector(combinePlayTimeChanged:)]) {
-        [_delegate combinePlayTimeChanged:displayDurationTime];
+        [_delegate combinePlayTimeChanged:_displayDurationTime];
     }
+}
+
+- (void)updateWhitePlayerPhase:(WhitePlayerPhase)phase {
+    [self.whiteReplayManager updateWhitePlayerPhase:phase];
 }
 
 - (void)stopDisplayLink {
@@ -92,18 +108,19 @@
 - (void)setPlaybackSpeed:(CGFloat)playbackSpeed {
     _playbackSpeed = playbackSpeed;
     [self.rtcReplayManager setPlaybackSpeed:playbackSpeed];
-    [self.whiteReplayManagaer setPlaybackSpeed:playbackSpeed];
+    [self.whiteReplayManager setPlaybackSpeed:playbackSpeed];
 }
 
 #pragma mark - Public Methods
 - (void)play {
+    
     self.pauseReason = self.pauseReason & ~CombineSyncManagerWaitingPauseReasonPlayerPause;
     [self.rtcReplayManager play];
     
     // video 将直接播放，whitePlayer 也直接播放
     if ([self.rtcReplayManager hasEnoughBuffer]) {
         AgoraLog(@"play directly");
-        [self.whiteReplayManagaer play];
+        [self.whiteReplayManager play];
         
         _displayLink.paused = NO;
     }
@@ -114,44 +131,35 @@
     
     _displayLink.paused = YES;
     [self.rtcReplayManager pause];
-    [self.whiteReplayManagaer pause];;
+    [self.whiteReplayManager pause];
 }
 
 - (void)finish {
-
-    if (self.rtcReplayFinished && self.whiteReplayFinished) {
-        _displayLink.paused = YES;
-        if ([self.delegate respondsToSelector:@selector(combinePlayDidFinish)]) {
-            [self.delegate combinePlayDidFinish];
-        }
+    _displayLink.paused = YES;
+    if ([self.delegate respondsToSelector:@selector(combinePlayDidFinish)]) {
+        [self.delegate combinePlayDidFinish];
     }
 }
 
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler {
-    
+        
     NSTimeInterval seekTime = CMTimeGetSeconds(time);
-    if(seekTime == 0){
-        // reset
-        displayStartTime = [[NSDate date] timeIntervalSince1970] * 1000;
-    }
-    
-    [self.whiteReplayManagaer seekToScheduleTime:seekTime];
+    [self.whiteReplayManager seekToScheduleTime:seekTime];
+    [self setDisplayDurationTime:seekTime];
     AgoraLog(@"seekTime: %f", seekTime);
-    
-    __weak typeof(self)weakSelf = self;
+
+    // 如果seek超出视频长度，finished为false，并且默认seek到最后一帧
     [self.rtcReplayManager seekToTime:time completionHandler:^(NSTimeInterval realTime, BOOL finished) {
-        if (finished) {
-            AgoraLog(@"realTime: %f", realTime);
-            // AVPlayer 的 seek 不完全准确, seek 完以后，根据 native 的真实时间，重新 seek
-            [weakSelf.whiteReplayManagaer seekToScheduleTime:seekTime];
-            
-            completionHandler(finished);
-        }
+        completionHandler(finished);
     }];
 }
 
+- (void)setDisplayDurationTime:(NSTimeInterval)time {
+    _displayDurationTime = time;
+}
+
 #pragma mark RTCReplayProtocol
-- (void)rtcReplayerStartBuffering {
+- (void)rtcReplayStartBuffering {
     if ([self.delegate respondsToSelector:@selector(combinePlayStartBuffering)]) {
         [self.delegate combinePlayStartBuffering];
     }
@@ -162,12 +170,12 @@
     self.pauseReason = self.pauseReason | CombineSyncManagerPauseReasonWaitingRTCPlayerBuffering;
     
     //whitePlayer 加载 buffering 的行为，一旦开始，不会停止。所以直接暂停播放即可。
-    [self.whiteReplayManagaer pause];;
+    [self.whiteReplayManager pause];
+    _displayLink.paused = YES;
 }
 
-- (void)rtcReplayerEndBuffering {
-    
-    BOOL isBuffering  = (self.pauseReason & CombineSyncManagerPauseReasonWaitingWhitePlayerBuffering) || (self.pauseReason & CombineSyncManagerPauseReasonWaitingRTCPlayerBuffering);
+- (void)rtcReplayEndBuffering {
+    BOOL isBuffering = !(self.pauseReason & CombineSyncManagerPauseReasonWaitingWhitePlayerBuffering) || (self.pauseReason & CombineSyncManagerPauseReasonWaitingRTCPlayerBuffering);
 
     self.pauseReason = self.pauseReason & ~CombineSyncManagerPauseReasonWaitingRTCPlayerBuffering;
     
@@ -179,7 +187,7 @@
      */
     if (self.pauseReason & CombineSyncManagerPauseReasonWaitingWhitePlayerBuffering) {
         [self.rtcReplayManager pause];
-    } else if (isBuffering && [self.delegate respondsToSelector:@selector(combinePlayEndBuffering)]) {
+    } else if (!isBuffering && [self.delegate respondsToSelector:@selector(combinePlayEndBuffering)]) {
         [self.delegate combinePlayEndBuffering];
     }
     
@@ -190,36 +198,51 @@
      */
     if (self.pauseReason == CombineSyncManagerPauseReasonNone) {
         [self.rtcReplayManager play];
-        [self.whiteReplayManagaer play];
+        [self.whiteReplayManager play];
+        _displayLink.paused = NO;
     } else if (self.pauseReason & CombineSyncManagerWaitingPauseReasonPlayerPause) {
         [self.rtcReplayManager pause];
-        [self.whiteReplayManagaer pause];
+        [self.whiteReplayManager pause];
     }
 }
-- (void)rtcReplayerDidFinish {
-    self.rtcReplayFinished = YES;
-    [self finish];
+- (void)rtcReplayDidFinish {
+    if ([self.delegate respondsToSelector:@selector(rtcPlayDidFinish)]) {
+        [self.delegate rtcPlayDidFinish];
+    }
 }
-- (void)rtcReplayerError:(NSError * _Nullable)error {
+
+- (void)rtcReplayPause {
+    if(!_displayLink.paused) {
+        [self pause];
+        if ([self.delegate respondsToSelector:@selector(combinePlayPause)]) {
+            [self.delegate combinePlayPause];
+        }
+    }
+}
+
+- (void)rtcReplayError:(NSError * _Nullable)error {
     
     [self pause];
-    if ([self.delegate respondsToSelector:@selector(combineReplayError:)]) {
-        [self.delegate combineReplayError:error];
+    if ([self.delegate respondsToSelector:@selector(combinePlayError:)]) {
+        [self.delegate combinePlayError:error];
     }
 }
 
 #pragma mark WhiteReplayProtocol
 - (void)whiteReplayerStartBuffering {
+    if ([self.delegate respondsToSelector:@selector(combinePlayStartBuffering)]) {
+        [self.delegate combinePlayStartBuffering];
+    }
+    
     self.pauseReason = self.pauseReason | CombineSyncManagerPauseReasonWaitingWhitePlayerBuffering;
     
     [self.rtcReplayManager pause];
     
-    if ([self.delegate respondsToSelector:@selector(combinePlayStartBuffering)]) {
-        [self.delegate combinePlayStartBuffering];
-    }
+    _displayLink.paused = YES;
 }
 - (void)whiteReplayerEndBuffering {
-    BOOL isBuffering  = (self.pauseReason & CombineSyncManagerPauseReasonWaitingWhitePlayerBuffering) || (self.pauseReason & CombineSyncManagerPauseReasonWaitingRTCPlayerBuffering);
+    
+    BOOL isBuffering = !(self.pauseReason & CombineSyncManagerPauseReasonWaitingWhitePlayerBuffering) || (self.pauseReason & CombineSyncManagerPauseReasonWaitingRTCPlayerBuffering);
     
     self.pauseReason = self.pauseReason & ~CombineSyncManagerPauseReasonWaitingWhitePlayerBuffering;
     
@@ -230,8 +253,8 @@
      2. native 不在缓存(00)，缓冲结束
      */
     if (self.pauseReason & CombineSyncManagerPauseReasonWaitingRTCPlayerBuffering) {
-        [self.whiteReplayManagaer pause];;
-    } else if (isBuffering && [self.delegate respondsToSelector:@selector(combinePlayEndBuffering)]) {
+        [self.whiteReplayManager pause];
+    } else if (!isBuffering && [self.delegate respondsToSelector:@selector(combinePlayEndBuffering)]) {
         [self.delegate combinePlayEndBuffering];
     }
     
@@ -242,25 +265,33 @@
      */
     if (self.pauseReason == CombineSyncManagerPauseReasonNone) {
         [self.rtcReplayManager play];
-        [self.whiteReplayManagaer play];
+        [self.whiteReplayManager play];
+        _displayLink.paused = NO;
     } else if (self.pauseReason & CombineSyncManagerWaitingPauseReasonPlayerPause) {
         [self.rtcReplayManager pause];
-        [self.whiteReplayManagaer pause];;
+        [self.whiteReplayManager pause];
     }
 }
 - (void)whiteReplayerDidFinish {
-    self.whiteReplayFinished = YES;
-    [self finish];
+    if ([self.delegate respondsToSelector:@selector(whitePlayDidFinish)]) {
+        [self.delegate whitePlayDidFinish];
+    }
 }
 - (void)whiteReplayerError:(NSError * _Nullable)error {
     [self pause];
-    if ([self.delegate respondsToSelector:@selector(combineReplayError:)]) {
-        [self.delegate combineReplayError:error];
+    if ([self.delegate respondsToSelector:@selector(combinePlayError:)]) {
+        [self.delegate combinePlayError:error];
     }
 }
 
-- (void)dealloc {
+
+- (void)releaseResource {
+    [NSNotificationCenter.defaultCenter removeObserver:self];
     [self stopDisplayLink];
+}
+
+- (void)dealloc {
+    [self releaseResource];
 }
 @end
 

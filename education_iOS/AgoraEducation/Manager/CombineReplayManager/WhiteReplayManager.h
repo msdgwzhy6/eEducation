@@ -8,12 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Whiteboard/Whiteboard.h>
-
-#ifdef DEBUG
-#define AgoraLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-#define AgoraLog(...)
-#endif
+#import "ReplayerModel.h"
 
 @protocol WhiteReplayProtocol <NSObject>
 
@@ -38,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak, nullable) id<WhiteReplayProtocol> delegate;
 
-- (instancetype)initWithWhitePlayer:(WhitePlayer *)whitePlayer;
+- (void)setupWithValue:(ReplayerModel *)model completeSuccessBlock:(void (^) (void)) successBlock completeFailBlock:(void (^) (NSError * _Nullable error))failBlock;
 
 /** 播放时，播放速率。即使暂停，该值也不会变为 0 */
 @property (nonatomic, assign) CGFloat playbackSpeed;

@@ -9,14 +9,14 @@
 #import "ReplayViewController.h"
 #import <AVKit/AVKit.h>
 
-#import "OneToOneEducationManager.h"
+#import "CombineReplayManager.h"
 
 #import "ReplayControlView.h"
 #import "HttpManager.h"
 #import "EduButton.h"
 #import "LoadingView.h"
 
-@interface ReplayViewController ()<ReplayControlViewDelegate, WhitePlayDelegate>
+@interface ReplayViewController ()<ReplayControlViewDelegate, CombineReplayDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *whiteboardBaseView;
 @property (weak, nonatomic) IBOutlet ReplayControlView *controlView;
@@ -27,13 +27,13 @@
 @property (weak, nonatomic) IBOutlet UIView *teacherView;
 @property (weak, nonatomic) IBOutlet UIImageView *defaultTeacherImage;
 
-@property (nonatomic, strong) OneToOneEducationManager *educationManager;
+@property (nonatomic, strong) CombineReplayManager *combineReplayManager;
 @property (nonatomic, weak) WhiteBoardView *boardView;
 @property (nonatomic, weak) WhiteVideoView *videoView;
 
 @property (nonatomic, assign) BOOL playFinished;
 
-// can seek when has buffer for m3u8 video
+// can seek when has buffer only for m3u8 video
 @property (nonatomic, assign) BOOL canSeek;
 
 @end
@@ -44,10 +44,9 @@
     [super viewDidLoad];
     
 //    for video test
-//    self.videoPath = @"https://white-pan.oss-cn-shanghai.aliyuncs.com/101/oceans.mp4";
+//    self.videoPath = @"https://netless-media.oss-cn-hangzhou.aliyuncs.com/c447a98ece45696f09c7fc88f649c082_3002a61acef14e4aa1b0154f734a991d.m3u8";
     [self setupView];
     [self initData];
-    [self setupWhiteBoard];
     
     self.playFinished = NO;
 }
@@ -55,69 +54,37 @@
 - (void)initData {
     
     self.canSeek = NO;
-    if(self.videoPath == nil || self.videoPath.length == 0) {
-        self.canSeek = YES;
-    }
     self.controlView.delegate = self;
-    self.educationManager = [OneToOneEducationManager new];
-}
-
-- (void)setupWhiteBoard {
     
-    // init white sdk
-    [self.educationManager initWhiteSDK:self.boardView dataSourceDelegate:self];
-
-    if(self.videoPath == nil || self.videoPath.length == 0) {
-        
-        ReplayerModel *replayerModel = [ReplayerModel new];
-        replayerModel.uuid = self.roomid;
-        replayerModel.videoPath = nil;
-        replayerModel.startTime = self.startTime;
-        replayerModel.endTime = self.endTime;
-        [self createWhiteReplayerWithModel:replayerModel];
-        
-    } else {
-        __block NSTimeInterval time = 0;
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-
-            AVURLAsset *asset = [AVURLAsset assetWithURL:[NSURL URLWithString:self.videoPath]];
-            time = CMTimeGetSeconds([asset duration]);
-
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                ReplayerModel *replayerModel = [ReplayerModel new];
-                replayerModel.uuid = self.roomid;
-                replayerModel.videoPath = self.videoPath;
-                replayerModel.startTime = self.startTime;
-                if(self.startTime.length == 13) {
-                    replayerModel.endTime = [NSString stringWithFormat:@"%ld", self.startTime.integerValue + (long)(time * 1000)];
-                } else {
-                    replayerModel.endTime = [NSString stringWithFormat:@"%ld", self.startTime.integerValue + (long)time];
-                }
-                [self createWhiteReplayerWithModel:replayerModel];
-            });
-        });
-    }
+    self.combineReplayManager = [CombineReplayManager new];
+    self.combineReplayManager.delegate = self;
+    
+    [self setupRTCReplay];
+    [self setupWhiteReplay];
 }
 
-- (void)createWhiteReplayerWithModel:(ReplayerModel *)replayerModel {
+- (void)setupRTCReplay {
+    AVPlayer *player = [self.combineReplayManager setupRTCReplayWithURL:[NSURL URLWithString:self.videoPath]];
+    AVPlayerLayer *avplayerLayer = (AVPlayerLayer *)self.videoView.layer;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [avplayerLayer setPlayer:player];
+        [avplayerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
+    });
+}
+
+- (void)setupWhiteReplay {
+    
+    ReplayerModel *replayerModel = [ReplayerModel new];
+    replayerModel.uuid = self.roomid;
+    replayerModel.videoPath = self.videoPath;
+    replayerModel.startTime = self.startTime;
+    replayerModel.endTime = self.endTime;
+    replayerModel.boardView = self.boardView;
     
     WEAK(self);
-    
-    // create white replayer
-    [self.educationManager createWhiteReplayerWithModel:replayerModel completeSuccessBlock:^(WhitePlayer * _Nullable whitePlayer, AVPlayer * _Nullable avPlayer) {
-
-        CMTime cmTime = CMTimeMakeWithSeconds(0, 100);
-        [weakself.educationManager seekWhiteToTime:cmTime completionHandler:^(BOOL finished) {
-            
-        }];
+    [self.combineReplayManager setupWhiteReplayWithValue:replayerModel completeSuccessBlock:^{
         
-        if(weakself.videoPath != nil && weakself.videoPath.length > 0 && avPlayer != nil) {
-            [weakself.videoView setAVPlayer: avPlayer];
-        }
-
-        [weakself.educationManager currentWhiteScene:^(NSInteger sceneCount, NSInteger sceneIndex) {
-            [weakself.educationManager moveWhiteToContainer:sceneIndex];
+        [weakself seekToTimeInterval:0 completionHandler:^(BOOL finished) {
         }];
         
     } completeFailBlock:^(NSError * _Nullable error) {
@@ -155,8 +122,9 @@
     return UIInterfaceOrientationMaskLandscape;
 }
 
--(void)dealloc {
-    [self.educationManager releaseResources];
+- (void)dealloc {
+    [self.combineReplayManager releaseResource];
+    self.combineReplayManager = nil;
 }
 
 #pragma mark Click Event
@@ -165,12 +133,6 @@
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControlView) object:nil];
     [self performSelector:@selector(hideControlView) withObject:nil afterDelay:3];
-}
-
-- (void)initPlay {
-    [self seekToTimeInterval:0 completionHandler:^(BOOL finished) {
-
-    }];
 }
 
 - (IBAction)onPlayClick:(id)sender {
@@ -184,10 +146,10 @@
     if(self.playFinished) {
         self.playFinished = NO;
         [self seekToTimeInterval:0 completionHandler:^(BOOL finished) {
-            [weakself.educationManager playWhite];
+            [weakself.combineReplayManager play];
         }];
     } else {
-        [self.educationManager playWhite];
+        [self.combineReplayManager play];
     }
 }
 
@@ -200,23 +162,23 @@
     onPlay ? (self.playBackgroundView.hidden = NO) : (self.playBackgroundView.hidden = YES);
 }
 
--(void)setPlayViewsVisible:(BOOL)onPlay {
+- (void)setPlayViewsVisible:(BOOL)onPlay {
     self.playBackgroundView.hidden = onPlay;
     self.playButton.hidden = onPlay;
     self.controlView.playOrPauseBtn.selected = onPlay;
 }
 
--(void)hideControlView {
+- (void)hideControlView {
     self.controlView.hidden = YES;
 }
 
 - (void)seekToTimeInterval:(NSTimeInterval)seconds completionHandler:(void (^)(BOOL finished))completionHandler {
     CMTime cmTime = CMTimeMakeWithSeconds(seconds, 100);
-    [self.educationManager seekWhiteToTime:cmTime completionHandler:completionHandler];
+    [self.combineReplayManager seekToTime:cmTime completionHandler:completionHandler];
 }
 
 - (NSTimeInterval)timeTotleDuration {
-    return [self.educationManager whiteTotleTimeDuration];
+    return (NSInteger)(self.endTime.integerValue - self.startTime.integerValue) * 0.001;
 }
 
 #pragma mark ReplayControlViewDelegate
@@ -255,12 +217,11 @@
     
     WEAK(self);
     [self seekToTimeInterval:currentTime completionHandler:^(BOOL finished) {
-        if(finished) {
-            NSString *currentTimeStr = [weakself convertTimeSecond: currentTime];
-            NSString *totleTimeStr = [weakself convertTimeSecond: [weakself timeTotleDuration]];
-            NSString *timeStr = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, totleTimeStr];
-            weakself.controlView.timeLabel.text = timeStr;
-        }
+        NSString *currentTimeStr = [weakself convertTimeSecond: currentTime];
+        NSString *totleTimeStr = [weakself convertTimeSecond: [weakself timeTotleDuration]];
+        NSString *timeStr = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, totleTimeStr];
+        weakself.controlView.timeLabel.text = timeStr;
+
         weakself.controlView.sliderView.isdragging = NO;
     }];
 }
@@ -280,28 +241,23 @@
 
 - (void)sliderTapped:(float)value {
     
-    if(!self.canSeek) {
-        self.controlView.sliderView.isdragging = NO;
-        return;
-    }
-    
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControlView) object:nil];
     
     self.controlView.sliderView.isdragging = YES;
     
     if([self timeTotleDuration] > 0) {
-        float currentTime = [self timeTotleDuration] * value;
+        NSInteger currentTime = [self timeTotleDuration] * value;
         WEAK(self);
         [self seekToTimeInterval:currentTime completionHandler:^(BOOL finished) {
-            if(finished) {
-                NSString *currentTimeStr = [weakself convertTimeSecond: currentTime];
-                NSString *totleTimeStr = [weakself convertTimeSecond: [weakself timeTotleDuration]];
-                NSString *timeStr = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, totleTimeStr];
-                weakself.controlView.timeLabel.text = timeStr;
-            }
+            NSString *currentTimeStr = [weakself convertTimeSecond: currentTime];
+            NSString *totleTimeStr = [weakself convertTimeSecond: [weakself timeTotleDuration]];
+            NSString *timeStr = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, totleTimeStr];
+            weakself.controlView.timeLabel.text = timeStr;
+            
             weakself.controlView.sliderView.isdragging = NO;
         }];
     } else {
+        
         self.controlView.sliderView.value = 0;
         self.controlView.sliderView.isdragging = NO;
     }
@@ -320,19 +276,19 @@
         if(self.playFinished) {
             self.playFinished = NO;
             [self seekToTimeInterval:0 completionHandler:^(BOOL finished) {
-                [weakself.educationManager playWhite];
+                [weakself.combineReplayManager play];
             }];
         } else {
-            [self.educationManager playWhite];
+            [self.combineReplayManager play];
         }
         
     } else {
-        [self.educationManager pauseWhite];
+        [self.combineReplayManager pause];
     }
 }
 
-#pragma mark WhitePlayDelegate
-- (void)whitePlayerTimeChanged:(NSTimeInterval)time {
+#pragma mark CombineReplayDelegate
+- (void)combinePlayTimeChanged:(NSTimeInterval)time {
     if(self.controlView.sliderView.isdragging){
         return;
     }
@@ -346,22 +302,19 @@
         self.controlView.timeLabel.text = timeStr;
     }
 }
-
-- (void)whitePlayerStartBuffering {
+- (void)combinePlayStartBuffering {
     if(self.playButton.hidden){
         [self setLoadingViewVisible:YES];
     }
 }
-
-- (void)whitePlayerEndBuffering {
+- (void)combinePlayEndBuffering {
     if(self.playButton.hidden){
         [self setLoadingViewVisible:NO];
     }
     self.canSeek = YES;
 }
-
-- (void)whitePlayerDidFinish {
-    [self.educationManager pauseWhite];
+- (void)combinePlayDidFinish {
+    [self.combineReplayManager pause];
 
     [self setLoadingViewVisible:NO];
     [self setPlayViewsVisible:NO];
@@ -370,10 +323,13 @@
     self.controlView.hidden = NO;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControlView) object:nil];
 }
-
-- (void)whitePlayerError:(NSError * _Nullable)error {
+- (void)combinePlayPause {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControlView) object:nil];
+    self.controlView.hidden = NO;
+    [self setPlayViewsVisible:NO];
+}
+- (void)combinePlayError:(NSError * _Nullable)error {
     NSLog(@"ReplayVideoViewController Stopped Err:%@", error);
 }
-
 
 @end

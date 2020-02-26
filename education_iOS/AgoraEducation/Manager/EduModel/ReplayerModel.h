@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Whiteboard/Whiteboard.h>
 
 @interface ReplayerModel : NSObject
 
@@ -14,6 +15,8 @@
 @property (nonatomic, copy) NSString *videoPath;
 @property (nonatomic, copy) NSString *startTime;
 @property (nonatomic, copy) NSString *endTime;
+
+@property (nonatomic, strong) WhiteBoardView *boardView;
 
 @end
 
