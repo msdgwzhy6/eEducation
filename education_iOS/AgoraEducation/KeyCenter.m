@@ -11,22 +11,22 @@
 @implementation KeyCenter
 
 + (NSString *)agoraAppid {
-    return <#Your Agora App Id#>;
+    return @"";
 }
 
 // assign token to nil if you have not enabled app certificate
 + (NSString *)agoraRTCToken {
-    return <#Your Agora RTC Token#>;
+    return @"";
 }
 
 // assign token to nil if you have not enabled app certificate
 + (NSString *)agoraRTMToken {
-    return <#Your Agora RTM Token#>;
+    return @"";
 }
 
 + (NSString *)whiteBoardToken {
     
-    return <#Your White Token#>;
+    return @"";
 }
 
 @end
