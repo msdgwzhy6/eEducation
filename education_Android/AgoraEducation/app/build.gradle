@@ -72,6 +72,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':base')
     implementation project(':sdk')
+    implementation project(':timeline')
     implementation project(':whiteboard')
 
     testImplementation 'junit:junit:4.12'

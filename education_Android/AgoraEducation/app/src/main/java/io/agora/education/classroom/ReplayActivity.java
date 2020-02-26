@@ -1,6 +1,7 @@
 package io.agora.education.classroom;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -25,6 +26,7 @@ public class ReplayActivity extends BaseActivity {
     private ReplayBoardFragment replayBoardFragment;
     private String url, uuid, token;
     private long startTime, endTime;
+    private boolean isInit;
 
     @Override
     protected int getLayoutResId() {
@@ -43,10 +45,15 @@ public class ReplayActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        video_view.setUseController(false);
         video_view.setVisibility(!TextUtils.isEmpty(url) ? View.VISIBLE : View.GONE);
         findViewById(R.id.iv_temp).setVisibility(TextUtils.isEmpty(url) ? View.VISIBLE : View.GONE);
 
         replayBoardFragment = new ReplayBoardFragment();
+        Bundle bundle = new Bundle();
+        bundle.putLong(WHITEBOARD_START_TIME, startTime);
+        bundle.putLong(WHITEBOARD_END_TIME, endTime);
+        replayBoardFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.layout_whiteboard, replayBoardFragment)
                 .commitNow();
@@ -55,8 +62,11 @@ public class ReplayActivity extends BaseActivity {
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        replayBoardFragment.initReplay(uuid, token, startTime, endTime);
-        replayBoardFragment.setPlayer(video_view, url);
+        if (!isInit) {
+            replayBoardFragment.initReplay(uuid, token);
+            replayBoardFragment.setPlayer(video_view, url);
+            isInit = true;
+        }
     }
 
     @Override
