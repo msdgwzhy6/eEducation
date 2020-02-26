@@ -339,6 +339,7 @@ export const NetlessAgoraReplay: React.FC<NetlessAgoraReplayProps> = ({
               });
             },
             onPhaseChanged: phase => {
+              console.log("phase", phase)
               store.updatePhase(phase);
             },
             onLoadFirstFrame: () => {
@@ -347,6 +348,7 @@ export const NetlessAgoraReplay: React.FC<NetlessAgoraReplayProps> = ({
             onSliceChanged: () => {
             },
             onPlayerStateChanged: (error) => {
+              console.log(error)
             },
             onStoppedWithError: (error) => {
               error && console.warn(error);
@@ -357,6 +359,7 @@ export const NetlessAgoraReplay: React.FC<NetlessAgoraReplayProps> = ({
               store.setReplayFail(true);
             },
             onScheduleTimeChanged: (scheduleTime) => {
+              console.log(scheduleTime)
               if (lock.current) return;
               store.setCurrentTime(scheduleTime);
             }

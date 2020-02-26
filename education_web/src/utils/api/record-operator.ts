@@ -1,6 +1,7 @@
 import { AgoraFetch } from "../fetch";
 
-const url = process.env.REACT_APP_AGORA_RECORDING_SERVICE_URL as string;
+// const url = process.env.REACT_APP_AGORA_RECORDING_SERVICE_URL as string;
+const url = ''
 const PREFIX = url.replace('%s', process.env.REACT_APP_AGORA_APP_ID as string);
 
 export class RecordOperator {

@@ -3,6 +3,9 @@ import AgoraRTC from 'agora-rtc-sdk';
 import { roomStore, RoomStore } from '../stores/room';
 import { isEmpty } from 'lodash';
 
+//@ts-ignore
+window.AgoraRTC = AgoraRTC
+
 if (process.env.REACT_APP_AGORA_LOG !== 'true') {
   AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.NONE);
 }
@@ -204,13 +207,13 @@ class AgoraRTCClient {
       this._localStream.init(() => {
         this.streamID = data.streamID;
         this.subscribeLocalStreamEvents();
-        if (data.audioOutput && data.audioOutput.deviceId) {
-          this.setAudioOutput(data.audioOutput.deviceId).then(() => {
-            resolve();
-          }).catch((err: any) => {
-            reject(err);
-          })
-        }
+        // if (data.audioOutput && data.audioOutput.deviceId) {
+        //   this.setAudioOutput(data.audioOutput.deviceId).then(() => {
+        //     resolve();
+        //   }).catch((err: any) => {
+        //     reject(err);
+        //   })
+        // }
         resolve();
       }, (err: any) => {
         reject(err);
@@ -276,13 +279,14 @@ class AgoraRTCClient {
     }
   }
 
-  getDevices (): Promise<Device[]> {
+  async getDevices (): Promise<Device[]> {
     return new Promise((resolve, reject) => {
       AgoraRTC.getDevices((devices: any) => {
-        const _devices: any[] = [];
-        devices.forEach((item: any) => {
-          _devices.push({deviceId: item.deviceId, kind: item.kind, label: item.label});
-        })
+        const _devices: any[] = devices.map((device: any) => ({
+          deviceId: device.deviceId,
+          kind: device.kind,
+          label: device.label
+        }))
         resolve(_devices);
       }, (err: any) => {
         reject(err);
@@ -320,19 +324,39 @@ export default class AgoraWebClient {
   }
 
   async getDevices () {
-    const client = new AgoraRTCClient();
-    await client.initClient(APP_ID);
-    await client.createLocalStream({
-      streamID: 0,
-      audio: true,
-      video: true,
-      microphoneId: '',
-      cameraId: ''
-    });
-    setTimeout(() => {
-      client.destroyLocalStream();
-    }, 80);
-    return client.getDevices();
+    const client = new AgoraRTCClient()
+    try {
+      const devices = await client.getDevices()
+
+      const cameraList = devices.filter((it: any) => it.kind === 'videoinput')
+      const microphoneList = devices.filter((it: any) => it.kind === 'audioinput')
+
+      if (!cameraList.length) {
+        throw 'cameraList is empty'
+      }
+
+      if (!microphoneList.length) {
+        throw 'microphoneList is empty'
+      }
+
+      const cameraId = cameraList[0].deviceId
+      const microphoneId = microphoneList[0].deviceId
+      await client.initClient(APP_ID)
+      const params = {
+        streamID: 0,
+        audio: true,
+        video: true,
+        screen: false,
+        microphoneId,
+        cameraId,
+      }
+      await client.createLocalStream(params)
+      return devices
+    } catch(err) {
+      throw err
+    } finally {
+      client.destroyLocalStream()
+    }
   }
 
   async joinChannel({
@@ -373,7 +397,7 @@ export default class AgoraWebClient {
   }
 
   async publishLocalStream(data: AgoraStreamSpec) {
-    console.log(" publish local stream ", this.published);
+    console.log(" publish local stream ", this.published, JSON.stringify(data));
     if (this.published) {
       await this.unpublishLocalStream();
       console.log("[agora-web] unpublished", this.published);

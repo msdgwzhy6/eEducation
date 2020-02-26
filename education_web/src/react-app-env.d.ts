@@ -21,4 +21,10 @@ declare interface Device {
   kind: string
 }
 
+declare module 'dplayer-fork' {
+  export * from 'dplayer'
+}
+
+declare module '*.png,*.svg,*.jpeg,*.jpg';
+
 declare module '*.scss';

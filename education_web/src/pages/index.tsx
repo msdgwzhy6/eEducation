@@ -15,6 +15,7 @@ import SmallClass from './classroom/small-class';
 import OneToOne from './classroom/one-to-one';
 import BigClass from './classroom/big-class';
 import { PageNotFound } from './404';
+import AgoraReplayContainer from './agora-replay';
 // import ErrorPage from './error-page/error-page';
 
 export default function () {
@@ -45,6 +46,9 @@ export default function () {
             <RoomPage>
               <BigClass />
             </RoomPage>
+          </Route>
+          <Route exact path="/agora_replay/:startTime/:endTime">
+            <AgoraReplayContainer />
           </Route>
           <Route exact path="/replay/:uuid/:startTime/:endTime/:mediaUrl">
             <ReplayContainer />

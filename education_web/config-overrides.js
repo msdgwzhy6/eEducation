@@ -13,7 +13,7 @@ const isProd = process.env.ENV === 'production';
 const sourceMap = () => config => {
   // TODO: Please use 'cheap-module-source-map' in production environment
   // TODO: 建议上发布环境用 'cheap-module-source-map'
-  config.devtool = isProd ? 'cheap-module-source-map' : 'cheap-module-eval-source-map'
+  // config.devtool = isProd ? 'cheap-module-source-map' : 'cheap-module-eval-source-map'
   return config;
 }
 

@@ -2,7 +2,7 @@
   "name": "agora-edu-web",
   "version": "5.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "/education_web",
   "main": "./src/index.tsx",
   "agora_electron": {
     "electron_version": "5.0.8",
@@ -78,6 +78,11 @@
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",
     "@netless/react-seek-slider": "^1.0.4",
+    "white-web-sdk": "2.6.0",
+    "@netless/white-audio-plugin": "^1.1.10",
+    "@netless/white-video-plugin": "^1.1.17",
+    "video.js": "^7.6.6",
+    "@videojs/http-streaming": "^1.12.2",
     "agora-electron-sdk": "2.9.1-beta.4",
     "agora-rtc-sdk": "3.0.0",
     "agora-rtm-sdk": "1.2.2",
@@ -89,6 +94,7 @@
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
+    "raf": "^3.4.1",
     "react": "^16.10.2",
     "react-color": "2.17.3",
     "react-dom": "^16.10.2",
@@ -97,10 +103,7 @@
     "react-scripts": "3.2.0",
     "rxjs": "^6.5.3",
     "typescript": "^3.6.4",
-    "uuid": "^3.3.3",
-    "white-web-sdk": "2.6.0",
-    "@netless/white-audio-plugin": "^1.1.10",
-    "@netless/white-video-plugin": "^1.1.17"
+    "uuid": "^3.3.3"
   },
   "scripts": {
     "electron": "cross-env REACT_APP_RUNTIME_PLATFORM=electron ELECTRON_START_URL=http://localhost:3000 concurrently \"npm run electron:web\" \"wait-on http://localhost:3000 && npm run electron:client\"",
@@ -135,6 +138,8 @@
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@types/ali-oss": "^6.0.4",
+    "@types/raf": "^3.4.0",
+    "@types/video.js": "^7.3.3",
     "@types/jest": "^24.0.19",
     "@types/lodash": "^4.14.145",
     "@types/node": "^12.12.22",

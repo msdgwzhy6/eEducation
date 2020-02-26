@@ -9,4 +9,11 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   )
+  app.use(
+    '/v1/apps',
+    proxy({
+      target: 'https://webdemo.agora.io',
+      changeOrigin: true
+    })
+  )
 }
